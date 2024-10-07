@@ -7,19 +7,17 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Protobuf Include="Protos\common.proto" GrpcServices="Server" />
-    <Protobuf Include="Protos\artistmeta.proto" GrpcServices="Server" />
-    <Protobuf Include="Protos\albummeta.proto" GrpcServices="Server" />
-    <Protobuf Include="Protos\trackmeta.proto" GrpcServices="Server" />
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="Grpc.AspNetCore" Version="2.57.0" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\Application\Application.csproj" />
     <ProjectReference Include="..\Infrastructure\Infrastructure.csproj" />
+    <ProjectReference Include="..\Protos\Protos.csproj" />
   </ItemGroup>
+
+  <!-- <ItemGroup> -->
+      <!-- <Folder Include="../Protos/GrpcMetadata/"/> -->
+  <!-- </ItemGroup> -->
 
 </Project>

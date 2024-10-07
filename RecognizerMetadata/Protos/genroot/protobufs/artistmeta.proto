@@ -1,8 +1,6 @@
 syntax = "proto3";
 
-option csharp_namespace = "GrpcMetadata";
-
-package metadata;
+package GrpcMetadata;
 
 
 service ArtistMetadata {

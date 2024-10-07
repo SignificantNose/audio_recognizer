@@ -1,9 +1,7 @@
 syntax = "proto3";
-import "Protos/common.proto";
+import "common.proto";
 
-option csharp_namespace = "GrpcMetadata";
-
-package metadata;
+package GrpcMetadata;
 
 service TrackMetadata {
   rpc AddTrackMetadata(AddTrackMetadataRequest) returns (AddTrackMetadataResponse);

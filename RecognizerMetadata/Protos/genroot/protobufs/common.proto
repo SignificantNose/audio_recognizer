@@ -1,8 +1,7 @@
 syntax = "proto3";
 
-option csharp_namespace = "GrpcMetadata";
 
-package metadata;
+package GrpcMetadata;
 
 message ArtistCredits{
   int64 artist_id = 1;
