@@ -1,0 +1,21 @@
+syntax = "proto3";
+
+option csharp_namespace = "GrpcMetadata";
+
+package metadata;
+
+message ArtistCredits{
+  int64 artist_id = 1;
+  string stage_name = 2;
+}
+
+message AlbumCredits{
+  int64 album_id = 1;
+  string title = 2;
+}
+
+message Date{
+  int32 year = 1;
+  int32 month = 2;
+  int32 day = 3;
+}  

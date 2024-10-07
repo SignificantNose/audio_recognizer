@@ -1,0 +1,24 @@
+{
+    "sqltools.connections": [
+        {
+            "previewLimit": 50,
+            "server": "localhost",
+            "port": 15432,
+            "driver": "PostgreSQL",
+            "database": "metadata",
+            "username": "postgres",
+            "name": "postgres meta",
+            "password": ""
+        },
+        {
+            "previewLimit": 50,
+            "server": "localhost",
+            "port": 15432,
+            "driver": "PostgreSQL",
+            "database": "test",
+            "username": "postgres",
+            "name": "test create db",
+            "password": ""
+        }
+    ]
+}

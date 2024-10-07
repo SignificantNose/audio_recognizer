@@ -1,0 +1,55 @@
+syntax = "proto3";
+import "Protos/common.proto";
+
+option csharp_namespace = "GrpcMetadata";
+
+package metadata;
+
+service TrackMetadata {
+  rpc AddTrackMetadata(AddTrackMetadataRequest) returns (AddTrackMetadataResponse);
+  rpc ReadTrackMetadata(ReadTrackMetadataRequest) returns (ReadTrackMetadataResponse);
+  rpc GetTrackListByTitle(GetTrackListByTitleRequest) returns (GetTrackListByTitleResponse);     
+}
+
+message AddTrackMetadataRequest {
+  string title = 1;
+  repeated int64 artist_ids = 2;    // validate?
+  Date release_date = 3;
+  optional int64 album_id = 4;
+  optional int64 cover_art_id = 5;
+}
+message AddTrackMetadataResponse {
+  int64 track_id = 1; 
+}
+
+message ReadTrackMetadataRequest {
+  int64 track_id = 1;
+}
+message ReadTrackMetadataResponse {
+  TrackData track = 1;
+}
+
+message GetTrackListByTitleRequest{
+  string title = 1;
+}
+message GetTrackListByTitleResponse{
+  repeated TrackListData tracks = 1;
+}
+
+
+
+message TrackData{
+  int64 track_id = 1;
+  string title = 2;
+  repeated ArtistCredits artists = 3;
+  Date release_date = 4;
+  optional AlbumCredits album = 5;
+  optional int64 cover_art_id = 6;
+}
+
+message TrackListData{
+  int64 track_id = 1;
+  string title = 2;
+  repeated ArtistCredits artists = 3;
+  optional AlbumCredits album = 4;
+}

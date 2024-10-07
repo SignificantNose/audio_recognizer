@@ -1,0 +1,42 @@
+syntax = "proto3";
+
+option csharp_namespace = "GrpcMetadata";
+
+package metadata;
+
+
+service ArtistMetadata {
+  rpc AddArtistMetadata(AddArtistMetadataRequest) returns (AddArtistMetadataResponse);
+  rpc ReadArtistMetadata(ReadArtistMetadataRequest) returns (ReadArtistMetadataResponse);
+  rpc GetArtistListByStageName(GetArtistListByStageNameRequest) returns (GetArtistListByStageNameResponse);
+}
+    
+message AddArtistMetadataRequest {  
+  string stage_name = 1;
+  optional string real_name = 2;
+}
+message AddArtistMetadataResponse {
+  int64 artist_id = 1;
+}
+    
+message ReadArtistMetadataRequest{
+  int64 artist_id = 1;
+}
+message ReadArtistMetadataResponse{
+  ArtistData artist = 1;
+}
+  
+message GetArtistListByStageNameRequest{
+  string stage_name = 1;
+}
+message GetArtistListByStageNameResponse{
+  repeated ArtistData artists = 1;
+}
+
+
+
+message ArtistData{
+  int64 artist_id = 1;
+  string stage_name = 2;
+  string real_name = 3;
+}

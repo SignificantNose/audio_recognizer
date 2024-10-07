@@ -1,0 +1,47 @@
+syntax = "proto3";
+import "Protos/common.proto";
+
+option csharp_namespace = "GrpcMetadata";
+
+package metadata;
+
+service AlbumMetadata {
+  rpc AddAlbumMetadata(AddAlbumMetadataRequest) returns (AddAlbumMetadataResponse);  
+  rpc ReadAlbumMetadata (ReadAlbumMetadataRequest) returns (ReadAlbumMetadataResponse);
+  rpc GetAlbumListByTitle(GetAlbumListByTitleRequest) returns (GetAlbumListByTitleResponse);
+}
+
+message AddAlbumMetadataRequest {
+  string title = 1;
+  repeated int64 artist_ids = 2;
+  Date release_date = 3;
+} 
+message AddAlbumMetadataResponse {
+  int64 album_id = 1;
+}  
+
+message ReadAlbumMetadataRequest{
+  int64 album_id = 1;
+}
+message ReadAlbumMetadataResponse{
+  AlbumData album = 1;
+}
+
+message GetAlbumListByTitleRequest{
+  string title = 1;
+}
+message GetAlbumListByTitleResponse{
+  repeated AlbumData albums = 1;
+}
+
+
+
+
+message AlbumData{
+  int64 album_id = 1;
+  string title = 2;
+  Date release_date = 3;
+  repeated ArtistCredits artists = 4;
+}
+  
+  
