@@ -31,7 +31,7 @@ namespace Brain.Services
             };
         }
 
-            public override async Task<RecognizeTrackResponse> RecognizeTrack(RecognizeTrackRequest request, ServerCallContext context)
+        public override async Task<RecognizeTrackResponse> RecognizeTrack(RecognizeTrackRequest request, ServerCallContext context)
         {
             long? trackId = await _recognition.RecognizeTrack(new Application.Models.RecognizeTrackModel{
                 Fingerprint = request.Fingerprint,
