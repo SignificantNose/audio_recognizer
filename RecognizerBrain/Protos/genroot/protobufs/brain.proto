@@ -9,7 +9,7 @@ service RecognizerMeta{
 
 message AddRecognitionNodeRequest{
     int64 track_id = 1;
-    int64 identification_hash = 2;
+    uint32 identification_hash = 2;
     int32 duration = 3;
 }
 
@@ -24,5 +24,5 @@ message RecognizeTrackRequest{
 }
 
 message RecognizeTrackResponse{
-    int64 track_id = 1;
+    optional int64 track_id = 1;
 }

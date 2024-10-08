@@ -26,27 +26,27 @@ namespace GrpcBrain {
           string.Concat(
             "CgticmFpbi5wcm90bxIJR3JwY0JyYWluIoMBChlBZGRSZWNvZ25pdGlvbk5v",
             "ZGVSZXF1ZXN0EhkKCHRyYWNrX2lkGAEgASgDUgd0cmFja0lkEi8KE2lkZW50",
-            "aWZpY2F0aW9uX2hhc2gYAiABKANSEmlkZW50aWZpY2F0aW9uSGFzaBIaCghk",
+            "aWZpY2F0aW9uX2hhc2gYAiABKA1SEmlkZW50aWZpY2F0aW9uSGFzaBIaCghk",
             "dXJhdGlvbhgDIAEoBVIIZHVyYXRpb24iQwoaQWRkUmVjb2duaXRpb25Ob2Rl",
             "UmVzcG9uc2USJQoOcmVjb2duaXRpb25faWQYASABKANSDXJlY29nbml0aW9u",
             "SWQiVQoVUmVjb2duaXplVHJhY2tSZXF1ZXN0EiAKC2ZpbmdlcnByaW50GAEg",
             "ASgJUgtmaW5nZXJwcmludBIaCghkdXJhdGlvbhgCIAEoBVIIZHVyYXRpb24i",
-            "MwoWUmVjb2duaXplVHJhY2tSZXNwb25zZRIZCgh0cmFja19pZBgBIAEoA1IH",
-            "dHJhY2tJZDLKAQoOUmVjb2duaXplck1ldGESYQoSQWRkUmVjb2duaXRpb25O",
-            "b2RlEiQuR3JwY0JyYWluLkFkZFJlY29nbml0aW9uTm9kZVJlcXVlc3QaJS5H",
-            "cnBjQnJhaW4uQWRkUmVjb2duaXRpb25Ob2RlUmVzcG9uc2USVQoOUmVjb2du",
-            "aXplVHJhY2sSIC5HcnBjQnJhaW4uUmVjb2duaXplVHJhY2tSZXF1ZXN0GiEu",
-            "R3JwY0JyYWluLlJlY29nbml6ZVRyYWNrUmVzcG9uc2VCXwoNY29tLkdycGNC",
-            "cmFpbkIKQnJhaW5Qcm90b1ABogIDR1hYqgIJR3JwY0JyYWluygIJR3JwY0Jy",
-            "YWlu4gIVR3JwY0JyYWluXEdQQk1ldGFkYXRh6gIJR3JwY0JyYWluYgZwcm90",
-            "bzM="));
+            "RQoWUmVjb2duaXplVHJhY2tSZXNwb25zZRIeCgh0cmFja19pZBgBIAEoA0gA",
+            "Ugd0cmFja0lkiAEBQgsKCV90cmFja19pZDLKAQoOUmVjb2duaXplck1ldGES",
+            "YQoSQWRkUmVjb2duaXRpb25Ob2RlEiQuR3JwY0JyYWluLkFkZFJlY29nbml0",
+            "aW9uTm9kZVJlcXVlc3QaJS5HcnBjQnJhaW4uQWRkUmVjb2duaXRpb25Ob2Rl",
+            "UmVzcG9uc2USVQoOUmVjb2duaXplVHJhY2sSIC5HcnBjQnJhaW4uUmVjb2du",
+            "aXplVHJhY2tSZXF1ZXN0GiEuR3JwY0JyYWluLlJlY29nbml6ZVRyYWNrUmVz",
+            "cG9uc2VCXwoNY29tLkdycGNCcmFpbkIKQnJhaW5Qcm90b1ABogIDR1hYqgIJ",
+            "R3JwY0JyYWluygIJR3JwY0JyYWlu4gIVR3JwY0JyYWluXEdQQk1ldGFkYXRh",
+            "6gIJR3JwY0JyYWluYgZwcm90bzM="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { },
           new pbr::GeneratedClrTypeInfo(null, null, new pbr::GeneratedClrTypeInfo[] {
             new pbr::GeneratedClrTypeInfo(typeof(global::GrpcBrain.AddRecognitionNodeRequest), global::GrpcBrain.AddRecognitionNodeRequest.Parser, new[]{ "TrackId", "IdentificationHash", "Duration" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::GrpcBrain.AddRecognitionNodeResponse), global::GrpcBrain.AddRecognitionNodeResponse.Parser, new[]{ "RecognitionId" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::GrpcBrain.RecognizeTrackRequest), global::GrpcBrain.RecognizeTrackRequest.Parser, new[]{ "Fingerprint", "Duration" }, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::GrpcBrain.RecognizeTrackResponse), global::GrpcBrain.RecognizeTrackResponse.Parser, new[]{ "TrackId" }, null, null, null, null)
+            new pbr::GeneratedClrTypeInfo(typeof(global::GrpcBrain.RecognizeTrackResponse), global::GrpcBrain.RecognizeTrackResponse.Parser, new[]{ "TrackId" }, new[]{ "TrackId" }, null, null, null)
           }));
     }
     #endregion
@@ -114,10 +114,10 @@ namespace GrpcBrain {
 
     /// <summary>Field number for the "identification_hash" field.</summary>
     public const int IdentificationHashFieldNumber = 2;
-    private long identificationHash_;
+    private uint identificationHash_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public long IdentificationHash {
+    public uint IdentificationHash {
       get { return identificationHash_; }
       set {
         identificationHash_ = value;
@@ -162,7 +162,7 @@ namespace GrpcBrain {
     public override int GetHashCode() {
       int hash = 1;
       if (TrackId != 0L) hash ^= TrackId.GetHashCode();
-      if (IdentificationHash != 0L) hash ^= IdentificationHash.GetHashCode();
+      if (IdentificationHash != 0) hash ^= IdentificationHash.GetHashCode();
       if (Duration != 0) hash ^= Duration.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
@@ -186,9 +186,9 @@ namespace GrpcBrain {
         output.WriteRawTag(8);
         output.WriteInt64(TrackId);
       }
-      if (IdentificationHash != 0L) {
+      if (IdentificationHash != 0) {
         output.WriteRawTag(16);
-        output.WriteInt64(IdentificationHash);
+        output.WriteUInt32(IdentificationHash);
       }
       if (Duration != 0) {
         output.WriteRawTag(24);
@@ -208,9 +208,9 @@ namespace GrpcBrain {
         output.WriteRawTag(8);
         output.WriteInt64(TrackId);
       }
-      if (IdentificationHash != 0L) {
+      if (IdentificationHash != 0) {
         output.WriteRawTag(16);
-        output.WriteInt64(IdentificationHash);
+        output.WriteUInt32(IdentificationHash);
       }
       if (Duration != 0) {
         output.WriteRawTag(24);
@@ -229,8 +229,8 @@ namespace GrpcBrain {
       if (TrackId != 0L) {
         size += 1 + pb::CodedOutputStream.ComputeInt64Size(TrackId);
       }
-      if (IdentificationHash != 0L) {
-        size += 1 + pb::CodedOutputStream.ComputeInt64Size(IdentificationHash);
+      if (IdentificationHash != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeUInt32Size(IdentificationHash);
       }
       if (Duration != 0) {
         size += 1 + pb::CodedOutputStream.ComputeInt32Size(Duration);
@@ -250,7 +250,7 @@ namespace GrpcBrain {
       if (other.TrackId != 0L) {
         TrackId = other.TrackId;
       }
-      if (other.IdentificationHash != 0L) {
+      if (other.IdentificationHash != 0) {
         IdentificationHash = other.IdentificationHash;
       }
       if (other.Duration != 0) {
@@ -280,7 +280,7 @@ namespace GrpcBrain {
             break;
           }
           case 16: {
-            IdentificationHash = input.ReadInt64();
+            IdentificationHash = input.ReadUInt32();
             break;
           }
           case 24: {
@@ -311,7 +311,7 @@ namespace GrpcBrain {
             break;
           }
           case 16: {
-            IdentificationHash = input.ReadInt64();
+            IdentificationHash = input.ReadUInt32();
             break;
           }
           case 24: {
@@ -766,6 +766,7 @@ namespace GrpcBrain {
   {
     private static readonly pb::MessageParser<RecognizeTrackResponse> _parser = new pb::MessageParser<RecognizeTrackResponse>(() => new RecognizeTrackResponse());
     private pb::UnknownFieldSet _unknownFields;
+    private int _hasBits0;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public static pb::MessageParser<RecognizeTrackResponse> Parser { get { return _parser; } }
@@ -793,6 +794,7 @@ namespace GrpcBrain {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public RecognizeTrackResponse(RecognizeTrackResponse other) : this() {
+      _hasBits0 = other._hasBits0;
       trackId_ = other.trackId_;
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
@@ -805,14 +807,29 @@ namespace GrpcBrain {
 
     /// <summary>Field number for the "track_id" field.</summary>
     public const int TrackIdFieldNumber = 1;
+    private readonly static long TrackIdDefaultValue = 0L;
+
     private long trackId_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public long TrackId {
-      get { return trackId_; }
+      get { if ((_hasBits0 & 1) != 0) { return trackId_; } else { return TrackIdDefaultValue; } }
       set {
+        _hasBits0 |= 1;
         trackId_ = value;
       }
+    }
+    /// <summary>Gets whether the "track_id" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool HasTrackId {
+      get { return (_hasBits0 & 1) != 0; }
+    }
+    /// <summary>Clears the value of the "track_id" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void ClearTrackId() {
+      _hasBits0 &= ~1;
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -838,7 +855,7 @@ namespace GrpcBrain {
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public override int GetHashCode() {
       int hash = 1;
-      if (TrackId != 0L) hash ^= TrackId.GetHashCode();
+      if (HasTrackId) hash ^= TrackId.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
       }
@@ -857,7 +874,7 @@ namespace GrpcBrain {
     #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       output.WriteRawMessage(this);
     #else
-      if (TrackId != 0L) {
+      if (HasTrackId) {
         output.WriteRawTag(8);
         output.WriteInt64(TrackId);
       }
@@ -871,7 +888,7 @@ namespace GrpcBrain {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
-      if (TrackId != 0L) {
+      if (HasTrackId) {
         output.WriteRawTag(8);
         output.WriteInt64(TrackId);
       }
@@ -885,7 +902,7 @@ namespace GrpcBrain {
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public int CalculateSize() {
       int size = 0;
-      if (TrackId != 0L) {
+      if (HasTrackId) {
         size += 1 + pb::CodedOutputStream.ComputeInt64Size(TrackId);
       }
       if (_unknownFields != null) {
@@ -900,7 +917,7 @@ namespace GrpcBrain {
       if (other == null) {
         return;
       }
-      if (other.TrackId != 0L) {
+      if (other.HasTrackId) {
         TrackId = other.TrackId;
       }
       _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);

@@ -41,7 +41,7 @@ namespace Infrastructure.Repositories
                 select * 
                   from artist_meta
                  where artist_id = @ArtistId;
-                """;        
+                """;            
 
             await using var connection = await GetConnection();
             // todo: think about nullability

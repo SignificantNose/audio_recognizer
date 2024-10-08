@@ -9,6 +9,6 @@ namespace Domain.Repositories
     public interface IRecognitionMetaRepository
     {
         Task<long> AddRecognitionNode(AddRecognitionNodeModel node);
-        Task<long> FindRecognitionNode(FindRecognitionNodeModel track);
+        Task<long?> FindRecognitionNode(FindRecognitionNodeModel track, int durationDiffThreshold);
     }
 }

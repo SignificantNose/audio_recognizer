@@ -9,7 +9,7 @@ namespace Domain.Entities
     {
         public long RecognitionId { get; init; }
         public long TrackId { get; init; }
-        public long IdentificationHash { get; init; }
+        public uint IdentificationHash { get; init; }
         public int Duration { get; init; }        
     }
 }
