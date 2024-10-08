@@ -1,0 +1,33 @@
+syntax = "proto3";
+
+package GrpcCovers;
+
+service CoverMeta{
+    rpc AddCoverMeta(AddCoverMetaRequest) returns (AddCoverMetaResponse);
+    rpc ReadCoverMeta(ReadCoverMetaRequest) returns (ReadCoverMetaResponse);
+}
+
+message AddCoverMetaRequest{
+    optional string jpg_url = 1;
+    optional string png_url = 2;
+}
+
+message AddCoverMetaResponse{
+    int64 cover_id = 1;
+}
+
+
+message ReadCoverMetaRequest{
+    int64 cover_id = 1;
+    CoverType cover_type = 2;
+}
+
+message ReadCoverMetaResponse{
+    string cover_url = 1;
+}
+
+
+enum CoverType{
+    COVER_JPG = 0;
+    COVER_PNG = 1;
+}

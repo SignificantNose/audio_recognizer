@@ -1,0 +1,28 @@
+syntax = "proto3";
+
+package GrpcBrain;
+
+service RecognizerMeta{
+    rpc AddRecognitionNode(AddRecognitionNodeRequest) returns (AddRecognitionNodeResponse);
+    rpc RecognizeTrack(RecognizeTrackRequest) returns (RecognizeTrackResponse);
+}
+
+message AddRecognitionNodeRequest{
+    int64 track_id = 1;
+    int64 identification_hash = 2;
+    int32 duration = 3;
+}
+
+message AddRecognitionNodeResponse{
+    int64 recognition_id = 1;
+}
+
+
+message RecognizeTrackRequest{
+    string fingerprint = 1;
+    int32 duration = 2;
+}
+
+message RecognizeTrackResponse{
+    int64 track_id = 1;
+}
