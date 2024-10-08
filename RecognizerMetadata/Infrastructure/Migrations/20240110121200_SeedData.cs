@@ -71,6 +71,7 @@ delete from track_meta;
 delete from album_meta;
 delete from artist_meta;
 """; 
+			Execute.Sql(seed_down_script);
         }
     }
 }
