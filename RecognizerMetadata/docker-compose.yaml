@@ -10,15 +10,15 @@ services:
       # ideally the application must take the connection string
       # from the env variable. todo.
       - ASPNETCORE_URLS=http://*:80 
-      - InfrastructureOptions__PostgresConnectionString=User ID=postgres;Host=postgresql;Port=5432;Database=metadata;Pooling=true;
+      - InfrastructureOptions__PostgresConnectionString=User ID=postgres;Host=metadata-postgresql;Port=5432;Database=metadata;Pooling=true;
     ports:
       - 50001:80
 
     depends_on:
-      postgresql:
+      metadata-postgresql:
         condition: service_healthy
 
-  postgresql:
+  metadata-postgresql:
     image: postgres
     restart: always
     container_name: metadata-postgres
@@ -33,7 +33,7 @@ services:
       retries: 5
       start_period: 5s
     ports:
-      - 15432:5432
+      - 15001:5432
   # redis:
   #   image: redis
   #   restart: always

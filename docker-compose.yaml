@@ -1,0 +1,80 @@
+version: "3"
+services:
+  recognizer:
+    image: significantnose/recognizer-brain
+    restart: always
+    container_name: recognizer-service
+    environment:
+      # apparently, non-prefixed env variable is the way to 
+      # override the appsettings.json configuration parameters.
+      # ideally the application must take the connection string
+      # from the env variable. todo.
+      - ASPNETCORE_URLS=http://*:80 
+      - InfrastructureOptions__PostgresConnectionString=User ID=postgres;Host=postgresql;Port=5432;Database=recognizer;Pooling=true;
+    ports:
+      - 50002:80
+
+    depends_on:
+      postgresql:
+        condition: service_healthy
+
+  metadata:
+    image: significantnose/recognizer-metadata
+    restart: always
+    container_name: metadata-service
+    environment:
+      # apparently, non-prefixed env variable is the way to 
+      # override the appsettings.json configuration parameters.
+      # ideally the application must take the connection string
+      # from the env variable. todo.
+      - ASPNETCORE_URLS=http://*:80 
+      - InfrastructureOptions__PostgresConnectionString=User ID=postgres;Host=postgresql;Port=5432;Database=metadata;Pooling=true;
+    ports:
+      - 50001:80
+
+    depends_on:
+      postgresql:
+        condition: service_healthy
+
+  covers:
+    image: significantnose/recognizer-covers
+    restart: always
+    container_name: covers-service
+    environment:
+      # apparently, non-prefixed env variable is the way to
+      # override the appsettings.json configuration parameters.
+      # ideally the application must take the connection string
+      # from the env variable. todo.
+      - ASPNETCORE_URLS=http://*:80
+      - InfrastructureOptions__PostgresConnectionString=User ID=postgres;Host=postgresql;Port=5432;Database=covers;Pooling=true;
+    ports:
+      - 50003:80
+
+    depends_on:
+      postgresql:
+        condition: service_healthy
+
+  postgresql:
+    image: postgres
+    restart: always
+    container_name: recognizer-postgres
+    # volumes:
+      # - ../docker-postgresql-multiple-databases:/docker-entrypoint-initdb.d/
+    environment:
+      # - "POSTGRES_MULTIPLE_DATABASES=recognizer,metadata,covers"
+      - "POSTGRES_USER=postgres"
+      - "POSTGRES_HOST_AUTH_METHOD=trust"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready", "-d", "recognizer"]
+      interval: 3s
+      timeout: 5s 
+      retries: 5
+      start_period: 5s
+    ports:
+      - 15432:5432
+  # redis:
+  #   image: redis
+  #   restart: always
+  #   container_name: local-redis
+  #   ports:
+  #     - 16379:6379

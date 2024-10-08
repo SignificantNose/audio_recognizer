@@ -1,6 +1,6 @@
 version: "3"
 services:
-  metadata:
+  covers:
     image: significantnose/recognizer-covers
     restart: always
     container_name: covers-service
@@ -10,15 +10,15 @@ services:
       # ideally the application must take the connection string
       # from the env variable. todo.
       - ASPNETCORE_URLS=http://*:80
-      - InfrastructureOptions__PostgresConnectionString=User ID=postgres;Host=postgresql;Port=5432;Database=covers;Pooling=true;
+      - InfrastructureOptions__PostgresConnectionString=User ID=postgres;Host=covers-postgresql;Port=5432;Database=covers;Pooling=true;
     ports:
       - 50003:80
 
     depends_on:
-      postgresql:
+      covers-postgresql:
         condition: service_healthy
 
-  postgresql:
+  covers-postgresql:
     image: postgres
     restart: always
     container_name: covers-postgres
@@ -33,7 +33,7 @@ services:
       retries: 5
       start_period: 5s
     ports:
-      - 15432:5432
+      - 15003:5432
   # redis:
   #   image: redis
   #   restart: always
