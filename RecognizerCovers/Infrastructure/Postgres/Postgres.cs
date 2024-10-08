@@ -20,7 +20,7 @@ namespace Infrastructure
             Dapper.DefaultTypeMap.MatchNamesWithUnderscores = true;
 
             // var mapper = NpgsqlConnection.GlobalTypeMapper;    
-            // mapper.MapComposite<AlbumArtistLink>("album_artist_link", Translator);
+            // mapper.MapComdposite<AlbumArtistLink>("album_artist_link", Translator);
             // mapper.MapComposite<TrackArtistLink>("track_artist_link", Translator);             
         }
 

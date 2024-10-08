@@ -8,8 +8,8 @@ service CoverMeta{
 }
 
 message AddCoverMetaRequest{
-    optional string jpg_url = 1;
-    optional string png_url = 2;
+    optional string jpg_uri = 1;
+    optional string png_uri = 2;
 }
 
 message AddCoverMetaResponse{
@@ -17,13 +17,13 @@ message AddCoverMetaResponse{
 }
 
 
-message ReadCoverMetaRequest{
+message ReadCoverMetaRequest{       
     int64 cover_id = 1;
     CoverType cover_type = 2;
 }
 
 message ReadCoverMetaResponse{
-    string cover_url = 1;
+    optional string cover_uri = 1;
 }
 
 

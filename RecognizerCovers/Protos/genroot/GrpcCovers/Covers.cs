@@ -25,28 +25,28 @@ namespace GrpcCovers {
       byte[] descriptorData = global::System.Convert.FromBase64String(
           string.Concat(
             "Cgxjb3ZlcnMucHJvdG8SCkdycGNDb3ZlcnMiaQoTQWRkQ292ZXJNZXRhUmVx",
-            "dWVzdBIcCgdqcGdfdXJsGAEgASgJSABSBmpwZ1VybIgBARIcCgdwbmdfdXJs",
-            "GAIgASgJSAFSBnBuZ1VybIgBAUIKCghfanBnX3VybEIKCghfcG5nX3VybCIx",
+            "dWVzdBIcCgdqcGdfdXJpGAEgASgJSABSBmpwZ1VyaYgBARIcCgdwbmdfdXJp",
+            "GAIgASgJSAFSBnBuZ1VyaYgBAUIKCghfanBnX3VyaUIKCghfcG5nX3VyaSIx",
             "ChRBZGRDb3Zlck1ldGFSZXNwb25zZRIZCghjb3Zlcl9pZBgBIAEoA1IHY292",
             "ZXJJZCJnChRSZWFkQ292ZXJNZXRhUmVxdWVzdBIZCghjb3Zlcl9pZBgBIAEo",
             "A1IHY292ZXJJZBI0Cgpjb3Zlcl90eXBlGAIgASgOMhUuR3JwY0NvdmVycy5D",
-            "b3ZlclR5cGVSCWNvdmVyVHlwZSI0ChVSZWFkQ292ZXJNZXRhUmVzcG9uc2US",
-            "GwoJY292ZXJfdXJsGAEgASgJUghjb3ZlclVybCopCglDb3ZlclR5cGUSDQoJ",
-            "Q09WRVJfSlBHEAASDQoJQ09WRVJfUE5HEAEytAEKCUNvdmVyTWV0YRJRCgxB",
-            "ZGRDb3Zlck1ldGESHy5HcnBjQ292ZXJzLkFkZENvdmVyTWV0YVJlcXVlc3Qa",
-            "IC5HcnBjQ292ZXJzLkFkZENvdmVyTWV0YVJlc3BvbnNlElQKDVJlYWRDb3Zl",
-            "ck1ldGESIC5HcnBjQ292ZXJzLlJlYWRDb3Zlck1ldGFSZXF1ZXN0GiEuR3Jw",
-            "Y0NvdmVycy5SZWFkQ292ZXJNZXRhUmVzcG9uc2VCZQoOY29tLkdycGNDb3Zl",
-            "cnNCC0NvdmVyc1Byb3RvUAGiAgNHWFiqAgpHcnBjQ292ZXJzygIKR3JwY0Nv",
-            "dmVyc+ICFkdycGNDb3ZlcnNcR1BCTWV0YWRhdGHqAgpHcnBjQ292ZXJzYgZw",
-            "cm90bzM="));
+            "b3ZlclR5cGVSCWNvdmVyVHlwZSJHChVSZWFkQ292ZXJNZXRhUmVzcG9uc2US",
+            "IAoJY292ZXJfdXJpGAEgASgJSABSCGNvdmVyVXJpiAEBQgwKCl9jb3Zlcl91",
+            "cmkqKQoJQ292ZXJUeXBlEg0KCUNPVkVSX0pQRxAAEg0KCUNPVkVSX1BORxAB",
+            "MrQBCglDb3Zlck1ldGESUQoMQWRkQ292ZXJNZXRhEh8uR3JwY0NvdmVycy5B",
+            "ZGRDb3Zlck1ldGFSZXF1ZXN0GiAuR3JwY0NvdmVycy5BZGRDb3Zlck1ldGFS",
+            "ZXNwb25zZRJUCg1SZWFkQ292ZXJNZXRhEiAuR3JwY0NvdmVycy5SZWFkQ292",
+            "ZXJNZXRhUmVxdWVzdBohLkdycGNDb3ZlcnMuUmVhZENvdmVyTWV0YVJlc3Bv",
+            "bnNlQmUKDmNvbS5HcnBjQ292ZXJzQgtDb3ZlcnNQcm90b1ABogIDR1hYqgIK",
+            "R3JwY0NvdmVyc8oCCkdycGNDb3ZlcnPiAhZHcnBjQ292ZXJzXEdQQk1ldGFk",
+            "YXRh6gIKR3JwY0NvdmVyc2IGcHJvdG8z"));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { },
           new pbr::GeneratedClrTypeInfo(new[] {typeof(global::GrpcCovers.CoverType), }, null, new pbr::GeneratedClrTypeInfo[] {
-            new pbr::GeneratedClrTypeInfo(typeof(global::GrpcCovers.AddCoverMetaRequest), global::GrpcCovers.AddCoverMetaRequest.Parser, new[]{ "JpgUrl", "PngUrl" }, new[]{ "JpgUrl", "PngUrl" }, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::GrpcCovers.AddCoverMetaRequest), global::GrpcCovers.AddCoverMetaRequest.Parser, new[]{ "JpgUri", "PngUri" }, new[]{ "JpgUri", "PngUri" }, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::GrpcCovers.AddCoverMetaResponse), global::GrpcCovers.AddCoverMetaResponse.Parser, new[]{ "CoverId" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::GrpcCovers.ReadCoverMetaRequest), global::GrpcCovers.ReadCoverMetaRequest.Parser, new[]{ "CoverId", "CoverType" }, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::GrpcCovers.ReadCoverMetaResponse), global::GrpcCovers.ReadCoverMetaResponse.Parser, new[]{ "CoverUrl" }, null, null, null, null)
+            new pbr::GeneratedClrTypeInfo(typeof(global::GrpcCovers.ReadCoverMetaResponse), global::GrpcCovers.ReadCoverMetaResponse.Parser, new[]{ "CoverUri" }, new[]{ "CoverUri" }, null, null, null)
           }));
     }
     #endregion
@@ -96,8 +96,8 @@ namespace GrpcCovers {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public AddCoverMetaRequest(AddCoverMetaRequest other) : this() {
-      jpgUrl_ = other.jpgUrl_;
-      pngUrl_ = other.pngUrl_;
+      jpgUri_ = other.jpgUri_;
+      pngUri_ = other.pngUri_;
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
@@ -107,56 +107,56 @@ namespace GrpcCovers {
       return new AddCoverMetaRequest(this);
     }
 
-    /// <summary>Field number for the "jpg_url" field.</summary>
-    public const int JpgUrlFieldNumber = 1;
-    private readonly static string JpgUrlDefaultValue = "";
+    /// <summary>Field number for the "jpg_uri" field.</summary>
+    public const int JpgUriFieldNumber = 1;
+    private readonly static string JpgUriDefaultValue = "";
 
-    private string jpgUrl_;
+    private string jpgUri_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public string JpgUrl {
-      get { return jpgUrl_ ?? JpgUrlDefaultValue; }
+    public string JpgUri {
+      get { return jpgUri_ ?? JpgUriDefaultValue; }
       set {
-        jpgUrl_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+        jpgUri_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
       }
     }
-    /// <summary>Gets whether the "jpg_url" field is set</summary>
+    /// <summary>Gets whether the "jpg_uri" field is set</summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public bool HasJpgUrl {
-      get { return jpgUrl_ != null; }
+    public bool HasJpgUri {
+      get { return jpgUri_ != null; }
     }
-    /// <summary>Clears the value of the "jpg_url" field</summary>
+    /// <summary>Clears the value of the "jpg_uri" field</summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public void ClearJpgUrl() {
-      jpgUrl_ = null;
+    public void ClearJpgUri() {
+      jpgUri_ = null;
     }
 
-    /// <summary>Field number for the "png_url" field.</summary>
-    public const int PngUrlFieldNumber = 2;
-    private readonly static string PngUrlDefaultValue = "";
+    /// <summary>Field number for the "png_uri" field.</summary>
+    public const int PngUriFieldNumber = 2;
+    private readonly static string PngUriDefaultValue = "";
 
-    private string pngUrl_;
+    private string pngUri_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public string PngUrl {
-      get { return pngUrl_ ?? PngUrlDefaultValue; }
+    public string PngUri {
+      get { return pngUri_ ?? PngUriDefaultValue; }
       set {
-        pngUrl_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+        pngUri_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
       }
     }
-    /// <summary>Gets whether the "png_url" field is set</summary>
+    /// <summary>Gets whether the "png_uri" field is set</summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public bool HasPngUrl {
-      get { return pngUrl_ != null; }
+    public bool HasPngUri {
+      get { return pngUri_ != null; }
     }
-    /// <summary>Clears the value of the "png_url" field</summary>
+    /// <summary>Clears the value of the "png_uri" field</summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public void ClearPngUrl() {
-      pngUrl_ = null;
+    public void ClearPngUri() {
+      pngUri_ = null;
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -174,8 +174,8 @@ namespace GrpcCovers {
       if (ReferenceEquals(other, this)) {
         return true;
       }
-      if (JpgUrl != other.JpgUrl) return false;
-      if (PngUrl != other.PngUrl) return false;
+      if (JpgUri != other.JpgUri) return false;
+      if (PngUri != other.PngUri) return false;
       return Equals(_unknownFields, other._unknownFields);
     }
 
@@ -183,8 +183,8 @@ namespace GrpcCovers {
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public override int GetHashCode() {
       int hash = 1;
-      if (HasJpgUrl) hash ^= JpgUrl.GetHashCode();
-      if (HasPngUrl) hash ^= PngUrl.GetHashCode();
+      if (HasJpgUri) hash ^= JpgUri.GetHashCode();
+      if (HasPngUri) hash ^= PngUri.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
       }
@@ -203,13 +203,13 @@ namespace GrpcCovers {
     #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       output.WriteRawMessage(this);
     #else
-      if (HasJpgUrl) {
+      if (HasJpgUri) {
         output.WriteRawTag(10);
-        output.WriteString(JpgUrl);
+        output.WriteString(JpgUri);
       }
-      if (HasPngUrl) {
+      if (HasPngUri) {
         output.WriteRawTag(18);
-        output.WriteString(PngUrl);
+        output.WriteString(PngUri);
       }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
@@ -221,13 +221,13 @@ namespace GrpcCovers {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
-      if (HasJpgUrl) {
+      if (HasJpgUri) {
         output.WriteRawTag(10);
-        output.WriteString(JpgUrl);
+        output.WriteString(JpgUri);
       }
-      if (HasPngUrl) {
+      if (HasPngUri) {
         output.WriteRawTag(18);
-        output.WriteString(PngUrl);
+        output.WriteString(PngUri);
       }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(ref output);
@@ -239,11 +239,11 @@ namespace GrpcCovers {
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public int CalculateSize() {
       int size = 0;
-      if (HasJpgUrl) {
-        size += 1 + pb::CodedOutputStream.ComputeStringSize(JpgUrl);
+      if (HasJpgUri) {
+        size += 1 + pb::CodedOutputStream.ComputeStringSize(JpgUri);
       }
-      if (HasPngUrl) {
-        size += 1 + pb::CodedOutputStream.ComputeStringSize(PngUrl);
+      if (HasPngUri) {
+        size += 1 + pb::CodedOutputStream.ComputeStringSize(PngUri);
       }
       if (_unknownFields != null) {
         size += _unknownFields.CalculateSize();
@@ -257,11 +257,11 @@ namespace GrpcCovers {
       if (other == null) {
         return;
       }
-      if (other.HasJpgUrl) {
-        JpgUrl = other.JpgUrl;
+      if (other.HasJpgUri) {
+        JpgUri = other.JpgUri;
       }
-      if (other.HasPngUrl) {
-        PngUrl = other.PngUrl;
+      if (other.HasPngUri) {
+        PngUri = other.PngUri;
       }
       _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
     }
@@ -283,11 +283,11 @@ namespace GrpcCovers {
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
             break;
           case 10: {
-            JpgUrl = input.ReadString();
+            JpgUri = input.ReadString();
             break;
           }
           case 18: {
-            PngUrl = input.ReadString();
+            PngUri = input.ReadString();
             break;
           }
         }
@@ -310,11 +310,11 @@ namespace GrpcCovers {
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
             break;
           case 10: {
-            JpgUrl = input.ReadString();
+            JpgUri = input.ReadString();
             break;
           }
           case 18: {
-            PngUrl = input.ReadString();
+            PngUri = input.ReadString();
             break;
           }
         }
@@ -792,7 +792,7 @@ namespace GrpcCovers {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public ReadCoverMetaResponse(ReadCoverMetaResponse other) : this() {
-      coverUrl_ = other.coverUrl_;
+      coverUri_ = other.coverUri_;
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
@@ -802,16 +802,30 @@ namespace GrpcCovers {
       return new ReadCoverMetaResponse(this);
     }
 
-    /// <summary>Field number for the "cover_url" field.</summary>
-    public const int CoverUrlFieldNumber = 1;
-    private string coverUrl_ = "";
+    /// <summary>Field number for the "cover_uri" field.</summary>
+    public const int CoverUriFieldNumber = 1;
+    private readonly static string CoverUriDefaultValue = "";
+
+    private string coverUri_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public string CoverUrl {
-      get { return coverUrl_; }
+    public string CoverUri {
+      get { return coverUri_ ?? CoverUriDefaultValue; }
       set {
-        coverUrl_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+        coverUri_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
       }
+    }
+    /// <summary>Gets whether the "cover_uri" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool HasCoverUri {
+      get { return coverUri_ != null; }
+    }
+    /// <summary>Clears the value of the "cover_uri" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void ClearCoverUri() {
+      coverUri_ = null;
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -829,7 +843,7 @@ namespace GrpcCovers {
       if (ReferenceEquals(other, this)) {
         return true;
       }
-      if (CoverUrl != other.CoverUrl) return false;
+      if (CoverUri != other.CoverUri) return false;
       return Equals(_unknownFields, other._unknownFields);
     }
 
@@ -837,7 +851,7 @@ namespace GrpcCovers {
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public override int GetHashCode() {
       int hash = 1;
-      if (CoverUrl.Length != 0) hash ^= CoverUrl.GetHashCode();
+      if (HasCoverUri) hash ^= CoverUri.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
       }
@@ -856,9 +870,9 @@ namespace GrpcCovers {
     #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       output.WriteRawMessage(this);
     #else
-      if (CoverUrl.Length != 0) {
+      if (HasCoverUri) {
         output.WriteRawTag(10);
-        output.WriteString(CoverUrl);
+        output.WriteString(CoverUri);
       }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
@@ -870,9 +884,9 @@ namespace GrpcCovers {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
-      if (CoverUrl.Length != 0) {
+      if (HasCoverUri) {
         output.WriteRawTag(10);
-        output.WriteString(CoverUrl);
+        output.WriteString(CoverUri);
       }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(ref output);
@@ -884,8 +898,8 @@ namespace GrpcCovers {
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public int CalculateSize() {
       int size = 0;
-      if (CoverUrl.Length != 0) {
-        size += 1 + pb::CodedOutputStream.ComputeStringSize(CoverUrl);
+      if (HasCoverUri) {
+        size += 1 + pb::CodedOutputStream.ComputeStringSize(CoverUri);
       }
       if (_unknownFields != null) {
         size += _unknownFields.CalculateSize();
@@ -899,8 +913,8 @@ namespace GrpcCovers {
       if (other == null) {
         return;
       }
-      if (other.CoverUrl.Length != 0) {
-        CoverUrl = other.CoverUrl;
+      if (other.HasCoverUri) {
+        CoverUri = other.CoverUri;
       }
       _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
     }
@@ -922,7 +936,7 @@ namespace GrpcCovers {
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
             break;
           case 10: {
-            CoverUrl = input.ReadString();
+            CoverUri = input.ReadString();
             break;
           }
         }
@@ -945,7 +959,7 @@ namespace GrpcCovers {
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
             break;
           case 10: {
-            CoverUrl = input.ReadString();
+            CoverUri = input.ReadString();
             break;
           }
         }

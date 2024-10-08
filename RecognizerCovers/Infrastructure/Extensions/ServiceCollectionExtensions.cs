@@ -13,7 +13,7 @@ namespace Infrastructure.Extensions
     public static class ServiceCollectionExtensions
     {
         public static IServiceCollection AddRepositories(this IServiceCollection services){
-            services.AddScoped<IRecognitionMetaRepository, RecognitionMetaRepository>();
+            services.AddScoped<ICoverMetaRepository, CoverMetaRepository>();
             
             return services;
         }
