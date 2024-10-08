@@ -1,5 +1,23 @@
 version: "3"
 services:
+  metadata:
+    image: significantnose/recognizer-covers
+    restart: always
+    container_name: covers-service
+    environment:
+      # apparently, non-prefixed env variable is the way to
+      # override the appsettings.json configuration parameters.
+      # ideally the application must take the connection string
+      # from the env variable. todo.
+      - ASPNETCORE_URLS=http://*:80
+      - InfrastructureOptions__PostgresConnectionString=User ID=postgres;Host=postgresql;Port=5432;Database=covers;Pooling=true;
+    ports:
+      - 50003:80
+
+    depends_on:
+      postgresql:
+        condition: service_healthy
+
   postgresql:
     image: postgres
     restart: always
@@ -9,9 +27,9 @@ services:
       - "POSTGRES_DB=covers"
       - "POSTGRES_HOST_AUTH_METHOD=trust"
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready", "-d", "recognizer"]
+      test: ["CMD-SHELL", "pg_isready", "-d", "covers"]
       interval: 3s
-      timeout: 5s 
+      timeout: 5s
       retries: 5
       start_period: 5s
     ports:

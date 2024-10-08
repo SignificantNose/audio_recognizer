@@ -3,6 +3,7 @@ using FluentMigrator;
 
 namespace Infrastructure.Migrations
 {
+    [Migration(20240310101100, TransactionBehavior.None)]
     public class InitSchema : Migration
     {
         public override void Up()
