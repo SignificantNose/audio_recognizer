@@ -43,7 +43,7 @@ public class RecognitionMetaRepository : PgRepository, IRecognitionMetaRepositor
     {
         const string baseSql = 
         """
-            select * 
+            select track_id
               from recognition_nodes
         """;
 
