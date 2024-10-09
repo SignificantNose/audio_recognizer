@@ -1,0 +1,14 @@
+version: "3"
+services:
+  gateway:
+    image: significantnose/recognizer-gateway
+    restart: always
+    container_name: recognizer-gateway
+    environment:
+      # apparently, non-prefixed env variable is the way to 
+      # override the appsettings.json configuration parameters.
+      # ideally the application must take the connection string
+      # from the env variable. todo.
+      - ASPNETCORE_URLS=http://*:80 
+    ports:
+      - 50000:80
