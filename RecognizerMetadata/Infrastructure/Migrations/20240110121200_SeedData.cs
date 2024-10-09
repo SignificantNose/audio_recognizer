@@ -35,15 +35,15 @@ values (1, 1)
 	 , (6, 5);
 
 insert into track_meta (track_id, album_id, cover_art_id, title, release_date)
-values (1, 1, null, 'in the night', '2024-07-19')
-	 , (2, 1, null, 'yoshinoya', '2024-07-19')
-	 , (3, 1, null, 'talk my $h1t', '2024-07-19')
+values (1, 1, 3, 'in the night', '2024-07-19')
+	 , (2, 1, 3, 'yoshinoya', '2024-07-19')
+	 , (3, 1, 3, 'talk my $h1t', '2024-07-19')
 	 , (4, null, null, 'this is america', '2019-05-10')
-	 , (5, 3, null, 'mirror', '2022-05-13')
+	 , (5, 3, 1, 'mirror', '2022-05-13')
 	 , (6, 4, null, 'alright', '2015-03-16')
 	 , (7, 2, null, 'human sacrifice', '2024-05-13')
 	 , (8, 5, null, 'pagan poetry', '2001-08-27')
-	 , (9, 6, null, 'blast off', '2021-11-11');
+	 , (9, 6, 2, 'blast off', '2021-11-11');
 
 insert into m2m_artist_track (track_id, artist_id)
 values (1, 1)

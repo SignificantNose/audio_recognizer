@@ -6,6 +6,7 @@ using FluentMigrator;
 
 namespace Infrastructure.Migrations
 {
+    [Migration(20240210101200, TransactionBehavior.None)]
     public class SeedData : Migration
     {
         public override void Up()
@@ -14,7 +15,7 @@ namespace Infrastructure.Migrations
 """
 insert into recognition_nodes (node_id, track_id, identification_hash, duration)
 values (1, 9, 1551671594, 285)
-     , (2, 5, 3849645351, 256)
+     , (2, 5, -445321945, 256)
      , (3, 3, 828419367, 226);
 """;
             

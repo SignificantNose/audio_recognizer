@@ -13,11 +13,7 @@
   <ItemGroup>
     <ProjectReference Include="..\Application\Application.csproj" />
     <ProjectReference Include="..\Infrastructure\Infrastructure.csproj" />
-    <ProjectReference Include="..\Protos\Protos.csproj" />
+    <ProjectReference Include="..\ProtoMetadata\ProtoMetadata.csproj" />
   </ItemGroup>
-
-  <!-- <ItemGroup> -->
-      <!-- <Folder Include="../Protos/GrpcMetadata/"/> -->
-  <!-- </ItemGroup> -->
-
+  
 </Project>

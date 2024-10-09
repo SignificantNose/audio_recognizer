@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.5.002.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Gateway", "Gateway.csproj", "{A85FD1A0-528F-4688-9424-380B4AEBD842}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RecognizerGateway", "RecognizerGateway.csproj", "{1855669A-5988-4065-A163-221E2E392B5F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -11,15 +11,15 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{A85FD1A0-528F-4688-9424-380B4AEBD842}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{A85FD1A0-528F-4688-9424-380B4AEBD842}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{A85FD1A0-528F-4688-9424-380B4AEBD842}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{A85FD1A0-528F-4688-9424-380B4AEBD842}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1855669A-5988-4065-A163-221E2E392B5F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1855669A-5988-4065-A163-221E2E392B5F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1855669A-5988-4065-A163-221E2E392B5F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1855669A-5988-4065-A163-221E2E392B5F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {B7332914-A14B-4653-AA7D-E94B530CA3A9}
+		SolutionGuid = {C766E9CB-02EF-4265-9D3D-34A4461878F4}
 	EndGlobalSection
 EndGlobal
