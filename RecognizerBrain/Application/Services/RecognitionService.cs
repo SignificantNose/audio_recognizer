@@ -5,6 +5,7 @@ using Chromaprint;
 using Chromaprint.Utilities;
 using Domain.Models;
 using Domain.Repositories;
+using Domain.Shared;
 
 namespace Application.Services;
 
@@ -20,12 +21,12 @@ public class RecognitionService : IRecognitionService
 
 
 
-    public async Task<long> AddRecognitionNode(AddRecognitionNodeModel node)
+    public async Task<Result<long>> AddRecognitionNode(AddRecognitionNodeModel node)
     {
         return await _recognitionRepository.AddRecognitionNode(node);
     }
 
-    public async Task<long?> RecognizeTrack(RecognizeTrackModel recognitionData)
+    public async Task<Result<long>> RecognizeTrack(RecognizeTrackModel recognitionData)
     {
         byte[] acquiredData = ChromaBase64.ByteEncoding.GetBytes(recognitionData.Fingerprint);
         int[] fingerprintData = IFileChromaContext.DecodeFingerprint(acquiredData, true, out _);

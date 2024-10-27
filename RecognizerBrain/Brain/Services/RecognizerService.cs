@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Application.Services.Interfaces;
+using Domain.Shared;
 using Grpc.Core;
 using GrpcBrain;
 
@@ -20,29 +21,45 @@ namespace Brain.Services
 
         public override async Task<AddRecognitionNodeResponse> AddRecognitionNode(AddRecognitionNodeRequest request, ServerCallContext context)
         {
-            long nodeId = await _recognition.AddRecognitionNode(new Domain.Models.AddRecognitionNodeModel{
+            Result<long> nodeIdResult = await _recognition.AddRecognitionNode(new Domain.Models.AddRecognitionNodeModel{
                 TrackId = request.TrackId,
                 IdentificationHash = request.IdentificationHash,
                 Duration = request.Duration                
             });
 
-            return new AddRecognitionNodeResponse{
-                RecognitionId = nodeId
-            };
+            if(nodeIdResult.IsSuccess){
+                return new AddRecognitionNodeResponse{
+                    RecognitionId = nodeIdResult.Value
+                };
+            }
+            else{
+                throw new RpcException(new Status(StatusCode.Unknown, nodeIdResult.Error.Message));
+            }
+
         }
 
         public override async Task<RecognizeTrackResponse> RecognizeTrack(RecognizeTrackRequest request, ServerCallContext context)
         {
-            long? trackId = await _recognition.RecognizeTrack(new Application.Models.RecognizeTrackModel{
+            Result<long> trackIdResult = await _recognition.RecognizeTrack(new Application.Models.RecognizeTrackModel{
                 Fingerprint = request.Fingerprint,
                 Duration = request.Duration
             });
 
-            if(trackId is null) return new RecognizeTrackResponse();
+            if(trackIdResult.IsSuccess){    
+                return new RecognizeTrackResponse{
+                    TrackId = trackIdResult.Value
+                };
+            }
+            else{
+                // ideally this method must return an array, but here's this:
+                if(trackIdResult.Error.Equals(Error.NullValue)){
+                    throw new RpcException(new Status(StatusCode.NotFound, "Track was not recognized."));
+                }
+                else{
+                    throw new RpcException(new Status(StatusCode.Unknown, trackIdResult.Error.Message));
+                }
+            }
             
-            return new RecognizeTrackResponse{
-                TrackId = trackId.Value
-            };
         }
     }
 }
