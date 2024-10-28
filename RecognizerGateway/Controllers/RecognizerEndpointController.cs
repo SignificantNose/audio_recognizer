@@ -8,6 +8,7 @@ using RecognizerGateway.Models;
 using RecognizerGateway.Projections;
 using RecognizerGateway.Services;
 using RecognizerGateway.Settings;
+using RecognizerGateway.Shared;
 
 namespace RecognizerGateway.Controllers;
 
@@ -33,47 +34,95 @@ public class RecognizerEndpointController : ControllerBase
     //     ).ToArray();
     // }
     [HttpPost(Name = "endp")]
-    public async Task<RecognizerResponse> RecognizeTrack(RecognizeTrackModel recognitionData)
+    public async Task<IActionResult> RecognizeTrack(RecognizeTrackModel recognitionData)
     {
-        RecognizeTrackResponse recognizedTrack = 
+        // 1. Recognize track
+        Result<RecognizeTrackResponse> recognitionResult = 
             await BrainService.Recognize(
                 _addresses.BrainAddress, 
                 recognitionData);
-        
-        if(recognizedTrack.HasTrackId){
-            ReadTrackMetadataResponse metadata = 
-                await MetadataService.FindMetadata(
-                    _addresses.MetadataAddress, 
-                    recognizedTrack.TrackId);
-            
-            if(metadata.Track.HasCoverArtId){
-                ReadCoverMetaResponse cover = 
-                    await CoversService.FindCover(
-                        _addresses.CoversAddress, 
-                        metadata.Track.CoverArtId, 
-                        GrpcCovers.CoverType.CoverJpg);
-                return new RecognizerResponse{
-                    TrackId = recognizedTrack.TrackId,
-                    Title = metadata.Track.Title,
-                    Artists = metadata.Track.Artists.Select(x => new Projections.ArtistCredits{
-                        ArtistId = x.ArtistId,
-                        StageName = x.StageName
-                    }),
-                    ReleaseDate = new DateOnly(
-                        metadata.Track.ReleaseDate.Year,
-                        metadata.Track.ReleaseDate.Month,
-                        metadata.Track.ReleaseDate.Day
-                    ),
-                    Album = new Projections.AlbumCredits{
-                        AlbumId = metadata.Track.Album.AlbumId,
-                        Title = metadata.Track.Album.Title
-                    },
-                    CoverUri = cover.CoverUri
-                };
-            }
+        if(!recognitionResult.IsSuccess){
+            StatusCode(StatusCodes.Status503ServiceUnavailable, "Recognition service is unavailable.");
         }
-        throw new Exception("");
-        // else return null??
+
+        RecognizeTrackResponse recognizedTrack = recognitionResult.Value;
+        if(!recognizedTrack.HasTrackId){
+            return Ok();
+        }
+
+        long trackId = recognizedTrack.TrackId;
+
+        // 2. Fetch track metadata
+        Result<ReadTrackMetadataResponse> metadataResult = 
+            await MetadataService.FindMetadata(
+                _addresses.MetadataAddress, 
+                trackId);
+        if(!metadataResult.IsSuccess){
+            return Ok(new RecognizerResponse{
+                TrackId = trackId
+            });
+        }
+
+        ReadTrackMetadataResponse metadata = metadataResult.Value;
+        if(!metadata.Track.HasCoverArtId){
+            return Ok(new RecognizerResponse{
+                TrackId = trackId,
+                Title = metadata.Track.Title,
+                Artists = metadata.Track.Artists.Select(x => new Projections.ArtistCredits{
+                    ArtistId = x.ArtistId,
+                    StageName = x.StageName
+                }),
+                ReleaseDate = new DateOnly(
+                    metadata.Track.ReleaseDate.Year,
+                    metadata.Track.ReleaseDate.Month,
+                    metadata.Track.ReleaseDate.Day
+                ),
+            });
+        }
+
+
+        // 3. Fetch cover art data
+        Result<ReadCoverMetaResponse> coverResult = 
+            await CoversService.FindCover(
+                _addresses.CoversAddress, 
+                metadata.Track.CoverArtId, 
+                GrpcCovers.CoverType.CoverJpg);
+        
+        if(!coverResult.IsSuccess){
+            return Ok(new RecognizerResponse{
+                TrackId = trackId,
+                Title = metadata.Track.Title,
+                Artists = metadata.Track.Artists.Select(x => new Projections.ArtistCredits{
+                    ArtistId = x.ArtistId,
+                    StageName = x.StageName
+                }),
+                ReleaseDate = new DateOnly(
+                    metadata.Track.ReleaseDate.Year,
+                    metadata.Track.ReleaseDate.Month,
+                    metadata.Track.ReleaseDate.Day
+                ),
+            });
+        }
+
+        ReadCoverMetaResponse cover = coverResult.Value;
+        return Ok(new RecognizerResponse{
+            TrackId = recognizedTrack.TrackId,
+            Title = metadata.Track.Title,
+            Artists = metadata.Track.Artists.Select(x => new Projections.ArtistCredits{
+                ArtistId = x.ArtistId,
+                StageName = x.StageName
+            }),
+            ReleaseDate = new DateOnly(
+                metadata.Track.ReleaseDate.Year,
+                metadata.Track.ReleaseDate.Month,
+                metadata.Track.ReleaseDate.Day
+            ),
+            Album = new Projections.AlbumCredits{
+                AlbumId = metadata.Track.Album.AlbumId,
+                Title = metadata.Track.Album.Title
+            },
+            CoverUri = cover.CoverUri
+        });
    
     }
 }

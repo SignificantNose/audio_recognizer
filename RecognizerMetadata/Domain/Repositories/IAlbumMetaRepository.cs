@@ -7,7 +7,7 @@ namespace Domain.Repositories
     {
         Task<long> AddAlbum(AddAlbumModel album);
 
-        Task<GetAlbumProjection> GetAlbumById(long albumId);
+        Task<GetAlbumProjection?> GetAlbumById(long albumId);
     
         Task<IEnumerable<GetAlbumProjection>> GetAlbumList();    
     }

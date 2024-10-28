@@ -2,6 +2,7 @@ using Application.Services.Interfaces;
 using Domain.Entities;
 using Domain.Models;
 using Domain.Repositories;
+using Domain.Shared;
 
 namespace Application.Services
 {
@@ -16,20 +17,20 @@ namespace Application.Services
 
 
 
-        public async Task<long> AddArtistMetadata(AddArtistModel artist)
+        public async Task<Result<long>> AddArtistMetadata(AddArtistModel artist)
         {
             return await _artistRepository.AddArtist(artist);
         }
 
-        public async Task<ArtistMetaV1> ReadArtistMetadata(long artistId)
+        public async Task<Result<ArtistMetaV1>> ReadArtistMetadata(long artistId)
         {
             return await _artistRepository.GetArtistById(artistId);
         }
 
-        public async Task<IEnumerable<ArtistMetaV1>> GetArtistListByStageName(string artistStageName)
+        public async Task<Result<IEnumerable<ArtistMetaV1>>> GetArtistListByStageName(string artistStageName)
         {
             IEnumerable<ArtistMetaV1> allArtists = await _artistRepository.GetArtistList();
-            return allArtists.Where(artist => artist.StageName == artistStageName);
+            return Result.Create(allArtists.Where(artist => artist.StageName == artistStageName));
         }
     }
 }

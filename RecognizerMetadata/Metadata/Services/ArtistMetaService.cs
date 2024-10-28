@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Application.Services.Interfaces;
 using Domain.Entities;
+using Domain.Shared;
 using Grpc.Core;
 using GrpcMetadata;
 
@@ -22,42 +23,66 @@ namespace Metadata.Services
 
         public override async Task<AddArtistMetadataResponse> AddArtistMetadata(AddArtistMetadataRequest request, ServerCallContext context)
         {
-            long artistId = await _artistService.AddArtistMetadata(
+            Result<long> artistIdResult = await _artistService.AddArtistMetadata(
                 new Domain.Models.AddArtistModel{
                     StageName = request.StageName,
                     RealName = request.RealName                    
             });
 
-            return new AddArtistMetadataResponse{
-                ArtistId = artistId  
-            };
+            if(artistIdResult.IsSuccess){
+                return new AddArtistMetadataResponse{
+                    ArtistId = artistIdResult.Value
+                };
+            }
+            else{
+                throw new RpcException(new Status(StatusCode.Unknown, artistIdResult.Error.Message));
+            }
+
         }
 
         public override async Task<ReadArtistMetadataResponse> ReadArtistMetadata(ReadArtistMetadataRequest request, ServerCallContext context)
         {
-            ArtistMetaV1 artist = await _artistService.ReadArtistMetadata(request.ArtistId);
-                
-            return new ReadArtistMetadataResponse{
-                Artist = new ArtistData{
-                    ArtistId = artist.ArtistId,
-                    StageName = artist.StageName,
-                    RealName = artist.RealName
+            Result<ArtistMetaV1> artistResult = await _artistService.ReadArtistMetadata(request.ArtistId);
+            
+            if(artistResult.IsSuccess){
+                ArtistMetaV1 artist = artistResult.Value;
+                return new ReadArtistMetadataResponse{
+                    Artist = new ArtistData{
+                        ArtistId = artist.ArtistId,
+                        StageName = artist.StageName,
+                        RealName = artist.RealName
+                    }
+                };
+            }
+            else{
+                if(artistResult.Error.Equals(Error.NullValue)){
+                    throw new RpcException(new Status(StatusCode.NotFound, $"Artist with ID {request.ArtistId} was not found."));
                 }
-            };
+                else{
+                    throw new RpcException(new Status(StatusCode.Unknown, artistResult.Error.Message));
+                }
+            }
+
         }
 
         public override async Task<GetArtistListByStageNameResponse> GetArtistListByStageName(GetArtistListByStageNameRequest request, ServerCallContext context)
         {
-            IEnumerable<ArtistMetaV1> artists = 
+            Result<IEnumerable<ArtistMetaV1>> artistsResult = 
                 await _artistService.GetArtistListByStageName(request.StageName);
             
-            return new GetArtistListByStageNameResponse{
-                Artists = {artists.Select(artist => new ArtistData{
-                    ArtistId = artist.ArtistId,
-                    StageName = artist.StageName,
-                    RealName = artist.RealName
-                })}
-            }; 
+            if(artistsResult.IsSuccess){
+                IEnumerable<ArtistMetaV1> artists = artistsResult.Value;
+                return new GetArtistListByStageNameResponse{
+                    Artists = {artists.Select(artist => new ArtistData{
+                        ArtistId = artist.ArtistId,
+                        StageName = artist.StageName,
+                        RealName = artist.RealName
+                    })}
+                }; 
+            }
+            else{
+                throw new RpcException(new Status(StatusCode.Unknown, artistsResult.Error.Message));
+            }
         }
     }
 }

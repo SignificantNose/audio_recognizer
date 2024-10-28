@@ -6,6 +6,7 @@ using Application.Services.Interfaces;
 using Domain.Enums;
 using Domain.Models;
 using Domain.Repositories;
+using Domain.Shared;
 
 namespace Application.Services
 {
@@ -19,12 +20,12 @@ namespace Application.Services
         }
 
 
-        public async Task<long> AddCoverMeta(AddCoverMetaModel cover)
+        public async Task<Result<long>> AddCoverMeta(AddCoverMetaModel cover)
         {
             return await _coverRepository.AddCoverMeta(cover);
         }
 
-        public async Task<string?> GetCoverMeta(long coverId, CoverType coverType)
+        public async Task<Result<string>> GetCoverMeta(long coverId, CoverType coverType)
         {
             return await _coverRepository.GetCoverUri(coverId, coverType);
         }

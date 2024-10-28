@@ -8,7 +8,7 @@ namespace Domain.Repositories
     {
         Task<long> AddTrack(AddTrackModel track);
         
-        Task<GetTrackProjection> GetTrackById(long trackId);
+        Task<GetTrackProjection?> GetTrackById(long trackId);
 
         Task<IEnumerable<GetTrackListProjection>> GetTrackList();
     }

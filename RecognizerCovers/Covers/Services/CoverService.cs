@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Application.Services.Interfaces;
 using Covers.Extensions;
+using Domain.Shared;
 using Grpc.Core;
 using GrpcCovers;
 
@@ -21,24 +22,39 @@ namespace Covers.Services
 
         public override async Task<AddCoverMetaResponse> AddCoverMeta(AddCoverMetaRequest request, ServerCallContext context)
         {
-            long coverId = await _coverService.AddCoverMeta(new Domain.Models.AddCoverMetaModel{
+            Result<long> coverIdResult = await _coverService.AddCoverMeta(new Domain.Models.AddCoverMetaModel{
                 JpgUri = request.JpgUri,
                 PngUri = request.PngUri
             });
 
-            return new AddCoverMetaResponse{
-                CoverId = coverId
-            };
+            if(coverIdResult.IsSuccess){
+                return new AddCoverMetaResponse{
+                    CoverId = coverIdResult.Value
+                };
+            }
+            else{
+                throw new RpcException(new Status(StatusCode.Unknown, coverIdResult.Error.Message));
+            }
+
         }
 
         public override async Task<ReadCoverMetaResponse> ReadCoverMeta(ReadCoverMetaRequest request, ServerCallContext context)
         {
-            string? coverUri = await _coverService.GetCoverMeta(request.CoverId, request.CoverType.ToCLR());
+            Result<string> coverUriResult = await _coverService.GetCoverMeta(request.CoverId, request.CoverType.ToCLR());
             
-            if(coverUri is null) return new ReadCoverMetaResponse{};
-            return new ReadCoverMetaResponse{
-                CoverUri = coverUri
-            };
+            if(coverUriResult.IsSuccess){
+                return new ReadCoverMetaResponse{
+                    CoverUri = coverUriResult.Value
+                };
+            }
+            else{
+                if(coverUriResult.Error.Equals(Error.NullValue)){
+                    throw new RpcException(new Status(StatusCode.NotFound, "Cover art does not exist."));
+                }
+                else{
+                    throw new RpcException(new Status(StatusCode.Unknown, coverUriResult.Error.Message));
+                }
+            }
         }
     }
 }

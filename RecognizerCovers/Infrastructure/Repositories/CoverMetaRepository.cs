@@ -43,6 +43,9 @@ public class CoverMetaRepository : PgRepository, ICoverMetaRepository
     public async Task<string?> GetCoverUri(long id, CoverType coverType)
     {
         // do not like this approach. re-visit later on
+        // basically a more convenient approach would be to store an ID and 
+        // cover type as a composite PK, and the value field to store the
+        // actual path. it is much more flexible and convenient to work with.
         const string sql = 
         """
         select {0}
@@ -61,7 +64,7 @@ public class CoverMetaRepository : PgRepository, ICoverMetaRepository
                     CoverId = id
                 }
             )
-        )).First();
+        )).FirstOrDefault();
 
         return uri;
     }

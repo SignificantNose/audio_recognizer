@@ -55,7 +55,7 @@ public class TrackMetaRepository : PgRepository, ITrackMetaRepository
         return trackId;
     }
 
-    public async Task<GetTrackProjection> GetTrackById(long trackId)
+    public async Task<GetTrackProjection?> GetTrackById(long trackId)
     {
         const string sqlQuery = 
         """
@@ -69,7 +69,7 @@ public class TrackMetaRepository : PgRepository, ITrackMetaRepository
 
         await using var connection = await GetConnection();
 
-        IEnumerable<GetTrackProjection> trackUngrouped = 
+        var trackUngrouped = 
             await connection.QueryAsync<GetTrackProjection,ArtistCredits,AlbumCredits,GetTrackProjection>(
                 new CommandDefinition(
                     sqlQuery,
@@ -87,14 +87,18 @@ public class TrackMetaRepository : PgRepository, ITrackMetaRepository
                 splitOn:"artist_id, album_id"
             );
 
-        IEnumerable<GetTrackProjection> track = trackUngrouped.GroupBy(t => t.TrackId).Select(g => 
-        {
-            var groupedTrack = g.First();
-            groupedTrack.Artists = g.Select(t => t.Artists.Single()).ToList();
-            return groupedTrack;
-        });
+        if(trackUngrouped is not null){
+            IEnumerable<GetTrackProjection> track = trackUngrouped.GroupBy(t => t.TrackId).Select(g => 
+            {
+                var groupedTrack = g.First();
+                groupedTrack.Artists = g.Select(t => t.Artists.Single()).ToList();
+                return groupedTrack;
+            });
 
-        return track.First();
+            return track.First();
+        }
+        
+        return null;
     }
 
     public async Task<IEnumerable<GetTrackListProjection>> GetTrackList()
@@ -110,7 +114,7 @@ public class TrackMetaRepository : PgRepository, ITrackMetaRepository
         
         await using var connection = await GetConnection();
 
-        IEnumerable<GetTrackListProjection> tracksUngrouped = 
+        var tracksUngrouped = 
             await connection.QueryAsync<GetTrackListProjection,ArtistCredits,AlbumCredits,GetTrackListProjection>(
                 new CommandDefinition(
                     sqlQuery
@@ -125,13 +129,16 @@ public class TrackMetaRepository : PgRepository, ITrackMetaRepository
                 splitOn:"artist_id, album_id"
             );
 
-        IEnumerable<GetTrackListProjection> tracks = tracksUngrouped.GroupBy(t => t.TrackId).Select(g => 
-        {
-            var groupedTrack = g.First();
-            groupedTrack.Artists = g.Select(t => t.Artists.Single()).ToList();
-            return groupedTrack;
-        });
+        if(tracksUngrouped is not null){
+            IEnumerable<GetTrackListProjection> tracks = tracksUngrouped.GroupBy(t => t.TrackId).Select(g => 
+            {
+                var groupedTrack = g.First();
+                groupedTrack.Artists = g.Select(t => t.Artists.Single()).ToList();
+                return groupedTrack;
+            });
 
-        return tracks;
+            return tracks;
+        }
+        return new List<GetTrackListProjection>();
     }
 }

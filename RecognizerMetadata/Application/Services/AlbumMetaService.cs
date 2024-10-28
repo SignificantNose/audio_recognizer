@@ -4,6 +4,7 @@ using Domain.Entities;
 using Domain.Models;
 using Domain.Projections;
 using Domain.Repositories;
+using Domain.Shared;
 
 namespace Application.Services
 {
@@ -17,20 +18,20 @@ namespace Application.Services
         }
 
 
-        public async Task<long> AddAlbumMetadata(AddAlbumModel album)
+        public async Task<Result<long>> AddAlbumMetadata(AddAlbumModel album)
         {
             return await _albumRepository.AddAlbum(album);
         }
 
-        public async Task<GetAlbumProjection> ReadAlbumMetadata(long albumId)
+        public async Task<Result<GetAlbumProjection>> ReadAlbumMetadata(long albumId)
         {
             return await _albumRepository.GetAlbumById(albumId);
         }
 
-        public async Task<IEnumerable<GetAlbumProjection>> GetAlbumListByTitle(string albumTitle)
+        public async Task<Result<IEnumerable<GetAlbumProjection>>> GetAlbumListByTitle(string albumTitle)
         {
             IEnumerable<GetAlbumProjection> albums = await _albumRepository.GetAlbumList();
-            return albums.Where(album => album.Title == albumTitle);
+            return Result.Create(albums.Where(album => album.Title == albumTitle));
         }
     }
 }

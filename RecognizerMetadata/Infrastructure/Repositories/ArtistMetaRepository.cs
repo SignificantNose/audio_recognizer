@@ -34,7 +34,7 @@ namespace Infrastructure.Repositories
             return artistId;
         }
 
-        public async Task<ArtistMetaV1> GetArtistById(long artistId)
+        public async Task<ArtistMetaV1?> GetArtistById(long artistId)
         {
             const string sqlQuery =             
                 """
@@ -66,13 +66,13 @@ namespace Infrastructure.Repositories
 
             await using var connection = await GetConnection();
             
-            IEnumerable<ArtistMetaV1> artists = await connection.QueryAsync<ArtistMetaV1>(
+            var artists = await connection.QueryAsync<ArtistMetaV1>(
                 new CommandDefinition(
                     sqlQuery
                 )
             );
             
-            return artists;
+            return artists is null ? new List<ArtistMetaV1>() : artists;
 
         }
     }

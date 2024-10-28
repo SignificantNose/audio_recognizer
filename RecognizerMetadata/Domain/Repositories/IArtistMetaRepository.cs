@@ -7,7 +7,7 @@ namespace Domain.Repositories
     {
         Task<long> AddArtist(AddArtistModel artist);
         
-        Task<ArtistMetaV1> GetArtistById(long artistId);
+        Task<ArtistMetaV1?> GetArtistById(long artistId);
         
         Task<IEnumerable<ArtistMetaV1>> GetArtistList();
     }

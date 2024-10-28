@@ -63,40 +63,48 @@ public class AlbumMetaRepository : PgRepository, IAlbumMetaRepository
         return albumId;
     }
 
-    public async Task<GetAlbumProjection> GetAlbumById(long albumId)
+    public async Task<GetAlbumProjection?> GetAlbumById(long albumId)
     {
         const string sqlQuery = 
         """
-                            select al.album_id, al.title, al.release_date, art.artist_id, art.stage_name
-                            from album_meta al        
-                        inner join m2m_album_artist al_art on al_art.album_id = al.album_id 
-                        inner join artist_meta art on al_art.artist_id = art.artist_id
-                            where al.album_id = @AlbumId
+            select al.album_id, al.title, al.release_date, art.artist_id, art.stage_name
+              from album_meta al        
+        inner join m2m_album_artist al_art on al_art.album_id = al.album_id 
+        inner join artist_meta art on al_art.artist_id = art.artist_id
+             where al.album_id = @AlbumId
         """;
 
         await using var connection = await GetConnection();
         var albumUngrouped = await connection.QueryAsync<GetAlbumProjection, ArtistCredits, GetAlbumProjection>(
-            sqlQuery,
+            new CommandDefinition(
+                sqlQuery,
+                new {   
+                    AlbumId = albumId
+                }
+            ),
 
             (albumProj, artistCred) => {
                 albumProj.Artists.Add(artistCred);
                 return albumProj;    
                 },
 
-            new {   
-                AlbumId = albumId
-            },
             splitOn: "artist_id"
-        );
+        );  
 
-        var album = albumUngrouped.GroupBy(a => a.AlbumId).Select(g =>
-        {
-            var groupedAlbum = g.First();
-            groupedAlbum.Artists = g.Select(a => a.Artists.Single()).ToList();
-            return groupedAlbum;
-        });
 
-        return album.First();       
+        if(albumUngrouped is not null){
+            var album = albumUngrouped.GroupBy(a => a.AlbumId).Select(g =>
+            {
+                var groupedAlbum = g.First();
+                groupedAlbum.Artists = g.Select(a => a.Artists.Single()).ToList();
+                return groupedAlbum;
+            });
+
+            return album.First();           
+        }
+
+        return null;
+
     }
 
     public async Task<IEnumerable<GetAlbumProjection>> GetAlbumList()
@@ -119,13 +127,16 @@ public class AlbumMetaRepository : PgRepository, IAlbumMetaRepository
             splitOn: "artist_id"
         );
         
-        var albums = albumsUngrouped.GroupBy(a => a.AlbumId).Select(g =>
-        {
-            var groupedAlbum = g.First();
-            groupedAlbum.Artists = g.Select(a=>a.Artists.Single()).ToList();
-            return groupedAlbum;
-        });
+        if(albumsUngrouped is not null){
+            var albums = albumsUngrouped.GroupBy(a => a.AlbumId).Select(g =>
+            {
+                var groupedAlbum = g.First();
+                groupedAlbum.Artists = g.Select(a=>a.Artists.Single()).ToList();
+                return groupedAlbum;
+            });
 
-        return albums;
+            return albums;
+        }
+        return new List<GetAlbumProjection>();
     }
 }
