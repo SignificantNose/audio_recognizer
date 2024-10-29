@@ -6,8 +6,8 @@ namespace Domain.Projections
         public string Title { get; init; }
         public List<ArtistCredits> Artists { get; set; } = new ();
         public DateOnly ReleaseDate { get; init; }
-        public AlbumCredits Album { get; set; }
-        public long CoverArtId { get; init; }
+        public AlbumCredits? Album { get; set; }
+        public long? CoverArtId { get; init; }
     }
 }
 
