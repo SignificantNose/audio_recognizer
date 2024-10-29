@@ -18,9 +18,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\RecognizerBrain\ProtoBrain\ProtoBrain.csproj" />
-    <ProjectReference Include="..\RecognizerCovers\ProtoCovers\ProtoCovers.csproj" />
-    <ProjectReference Include="..\RecognizerMetadata\ProtoMetadata\ProtoMetadata.csproj" />
+    <ProjectReference Include="..\..\RecognizerBrain\ProtoBrain\ProtoBrain.csproj" />
+    <ProjectReference Include="..\..\RecognizerCovers\ProtoCovers\ProtoCovers.csproj" />
+    <ProjectReference Include="..\..\RecognizerMetadata\ProtoMetadata\ProtoMetadata.csproj" />
   </ItemGroup>
 
 </Project>

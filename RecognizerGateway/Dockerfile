@@ -7,7 +7,7 @@ COPY . .
 
 # P.S. invoke docker build from outer directory to be able to see other projects
 RUN --mount=type=cache,id=nuget,target=/root/.nuget/packages \
-    dotnet publish -a x64 --use-current-runtime --self-contained false -o /app ./RecognizerGateway/RecognizerGateway.csproj
+    dotnet publish -a x64 --use-current-runtime --self-contained false -o /app ./RecognizerGateway/Gateway/Gateway.csproj
 
 
 # state w/o build files
@@ -17,4 +17,4 @@ EXPOSE 50002
 WORKDIR /app
 COPY --from=build /app .
 
-ENTRYPOINT ["dotnet", "RecognizerGateway.dll"]
+ENTRYPOINT ["dotnet", "Gateway.dll"]
