@@ -7,6 +7,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddGrpc();
+builder.Services.AddAutoMapper(typeof(Program));
 
 // var loggerFactory = LoggerFactory.Create(builder => builder.AddConsole());
 // NpgsqlLoggingConfiguration.InitializeLogging(loggerFactory);

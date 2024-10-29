@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Application.Services.Interfaces;
+using AutoMapper;
 using Covers.Extensions;
+using Domain.Models;
 using Domain.Shared;
 using Grpc.Core;
 using GrpcCovers;
@@ -13,19 +15,19 @@ namespace Covers.Services
     public class CoverService : GrpcCovers.CoverMeta.CoverMetaBase
     {
         private readonly ICoverMetaService _coverService;
+        private readonly IMapper _mapper;
 
-        public CoverService(ICoverMetaService coverService)
+        public CoverService(ICoverMetaService coverService, IMapper mapper)
         {
             _coverService = coverService;
+            _mapper = mapper;
         }
 
 
         public override async Task<AddCoverMetaResponse> AddCoverMeta(AddCoverMetaRequest request, ServerCallContext context)
         {
-            Result<long> coverIdResult = await _coverService.AddCoverMeta(new Domain.Models.AddCoverMetaModel{
-                JpgUri = request.JpgUri,
-                PngUri = request.PngUri
-            });
+            AddCoverMetaModel addModel = _mapper.Map<AddCoverMetaModel>(request);
+            Result<long> coverIdResult = await _coverService.AddCoverMeta(addModel);
 
             if(coverIdResult.IsSuccess){
                 return new AddCoverMetaResponse{

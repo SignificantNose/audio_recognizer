@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Application.Services.Interfaces;
+using AutoMapper;
+using Domain.Models;
 using Domain.Projections;
 using Domain.Shared;
 using Grpc.Core;
@@ -13,25 +15,19 @@ namespace Metadata.Services
     public class TrackMetaService : GrpcMetadata.TrackMetadata.TrackMetadataBase
     {
         private readonly ITrackMetaService _trackService;
+        private readonly IMapper _mapper;
 
-        public TrackMetaService(ITrackMetaService trackService)
+        public TrackMetaService(ITrackMetaService trackService, IMapper mapper)
         {
             _trackService = trackService;
+            _mapper = mapper;
         }
 
 
         public override async Task<AddTrackMetadataResponse> AddTrackMetadata(AddTrackMetadataRequest request, ServerCallContext context)
         {
-            Result<long> trackIdResult = await _trackService.AddTrackMetadata(new Domain.Models.AddTrackModel{
-                Title = request.Title,
-                ArtistIds = request.ArtistIds,
-                ReleaseDate = new DateOnly(
-                    request.ReleaseDate.Year,
-                    request.ReleaseDate.Month,
-                    request.ReleaseDate.Day),
-                AlbumId = request.HasAlbumId? request.AlbumId : null,   // todo make nullable types in the request
-                CoverArtId = request.HasCoverArtId? request.CoverArtId : null   // todo make nullable types in the reques
-            });
+            AddTrackModel addModel = _mapper.Map<AddTrackModel>(request);  
+            Result<long> trackIdResult = await _trackService.AddTrackMetadata(addModel);
 
             if(trackIdResult.IsSuccess){
                 return new AddTrackMetadataResponse{
@@ -51,24 +47,7 @@ namespace Metadata.Services
             if(trackResult.IsSuccess){
                 GetTrackProjection track = trackResult.Value;
                 return new ReadTrackMetadataResponse{
-                    Track = new TrackData{
-                        TrackId = track.TrackId,
-                        Title = track.Title,
-                        Artists = {track.Artists.Select(a => new GrpcMetadata.ArtistCredits{
-                            ArtistId = a.ArtistId,
-                            StageName = a.StageName
-                        })},
-                        ReleaseDate = new Date{
-                            Year = track.ReleaseDate.Year,
-                            Month = track.ReleaseDate.Month,
-                            Day = track.ReleaseDate.Day   
-                        },
-                        Album = track.Album==null? null : new GrpcMetadata.AlbumCredits{
-                            AlbumId = track.Album.AlbumId,
-                            Title = track.Album.Title
-                        },
-                        CoverArtId = track.CoverArtId
-                    }               
+                    Track = _mapper.Map<TrackData>(track)             
                 };
             }
             else{
@@ -89,18 +68,9 @@ namespace Metadata.Services
             if(tracksResult.IsSuccess){
                 IEnumerable<GetTrackListProjection> tracks = tracksResult.Value;
                 return new GetTrackListByTitleResponse{
-                    Tracks = {tracks.Select(track => new TrackListData{
-                        TrackId = track.TrackId,
-                        Title = track.Title,
-                        Artists = {track.Artists.Select(a => new GrpcMetadata.ArtistCredits{
-                            ArtistId = a.ArtistId,
-                            StageName = a.StageName
-                        })},
-                        Album = new GrpcMetadata.AlbumCredits{
-                            AlbumId = track.Album.AlbumId,
-                            Title = track.Album.Title
-                        }
-                    })}
+                    Tracks = {
+                        _mapper.Map<IEnumerable<TrackListData>>(tracks)
+                    }
                 };
             }
             else{

@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Application.Services.Interfaces;
+using AutoMapper;
+using Domain.Models;
 using Domain.Projections;
 using Domain.Shared;
 using Grpc.Core;
@@ -13,25 +15,20 @@ namespace Metadata.Services
     public class AlbumMetaService : GrpcMetadata.AlbumMetadata.AlbumMetadataBase
     {
         private readonly IAlbumMetaService _albumService;
+        private readonly IMapper _mapper;
 
-        public AlbumMetaService(IAlbumMetaService albumService)
+        public AlbumMetaService(IAlbumMetaService albumService, IMapper mapper)
         {
             _albumService = albumService;
+            _mapper = mapper;
         }
 
 
 
         public override async Task<AddAlbumMetadataResponse> AddAlbumMetadata(AddAlbumMetadataRequest request, ServerCallContext context)
         {
-            Result<long> albumIdResult = await _albumService.AddAlbumMetadata(new Domain.Models.AddAlbumModel{
-                Title = request.Title,
-                ArtistIds = request.ArtistIds,
-                ReleaseDate = new DateOnly(
-                    request.ReleaseDate.Year,
-                    request.ReleaseDate.Month,
-                    request.ReleaseDate.Day
-                    ) 
-            });
+            AddAlbumModel addModel = _mapper.Map<AddAlbumModel>(request);
+            Result<long> albumIdResult = await _albumService.AddAlbumMetadata(addModel);
 
             if(albumIdResult.IsSuccess){
                 return new AddAlbumMetadataResponse{
@@ -49,19 +46,7 @@ namespace Metadata.Services
             if(albumResult.IsSuccess){
                 GetAlbumProjection album = albumResult.Value;
                 return new ReadAlbumMetadataResponse{
-                    Album = new AlbumData{
-                        AlbumId = album.AlbumId,
-                        Title = album.Title,
-                        ReleaseDate = new Date{
-                            Year = album.ReleaseDate.Year,
-                            Month = album.ReleaseDate.Month,
-                            Day = album.ReleaseDate.Day 
-                        },
-                        Artists = {album.Artists.Select(a => new GrpcMetadata.ArtistCredits {
-                            ArtistId = a.ArtistId,
-                            StageName = a.StageName
-                        })}
-                    }
+                    Album = _mapper.Map<AlbumData>(album)
                 };
             }
             else{
@@ -81,19 +66,7 @@ namespace Metadata.Services
                 IEnumerable<GetAlbumProjection> albums = albumsResult.Value;
                 return new GetAlbumListByTitleResponse{
                     Albums = {
-                        albums.Select(album => new AlbumData{
-                            AlbumId = album.AlbumId,
-                            Title = album.Title,
-                            ReleaseDate = new Date{
-                                Year = album.ReleaseDate.Year,
-                                Month = album.ReleaseDate.Month,
-                                Day = album.ReleaseDate.Day 
-                            },
-                            Artists = {album.Artists.Select(a => new GrpcMetadata.ArtistCredits {
-                                ArtistId = a.ArtistId,
-                                StageName = a.StageName
-                            })}
-                        })
+                        _mapper.Map<IEnumerable<AlbumData>>(albums)
                     }
                 };
             }

@@ -1,3 +1,4 @@
+using AutoMapper;
 using Grpc.Net.Client;
 using GrpcBrain;
 using GrpcCovers;
@@ -18,13 +19,16 @@ public class RecognizerEndpointController : ControllerBase
 {
     private readonly ILogger<RecognizerEndpointController> _logger;
     private readonly MicroserviceAddresses _addresses;
+    private readonly IMapper _mapper;
 
     public RecognizerEndpointController(
         ILogger<RecognizerEndpointController> logger,
-        IOptions<MicroserviceAddresses> addresses)
+        IOptions<MicroserviceAddresses> addresses,
+        IMapper mapper)
     {
         _logger = logger;
         _addresses = addresses.Value;
+        _mapper = mapper;
     }
 
     // [HttpGet(Name = "GetWeatherForecast")]
@@ -68,15 +72,9 @@ public class RecognizerEndpointController : ControllerBase
             return Ok(new RecognizerResponse{
                 TrackId = trackId,
                 Title = metadata.Track.Title,
-                Artists = metadata.Track.Artists.Select(x => new Projections.ArtistCredits{
-                    ArtistId = x.ArtistId,
-                    StageName = x.StageName
-                }),
-                ReleaseDate = new DateOnly(
-                    metadata.Track.ReleaseDate.Year,
-                    metadata.Track.ReleaseDate.Month,
-                    metadata.Track.ReleaseDate.Day
-                ),
+                Artists = _mapper.Map<IEnumerable<Projections.ArtistCredits>>(metadata.Track.Artists),
+                ReleaseDate = _mapper.Map<DateOnly>(metadata.Track.ReleaseDate),
+                Album = _mapper.Map<Projections.AlbumCredits>(metadata.Track.Album),
             });
         }
 
@@ -92,15 +90,9 @@ public class RecognizerEndpointController : ControllerBase
             return Ok(new RecognizerResponse{
                 TrackId = trackId,
                 Title = metadata.Track.Title,
-                Artists = metadata.Track.Artists.Select(x => new Projections.ArtistCredits{
-                    ArtistId = x.ArtistId,
-                    StageName = x.StageName
-                }),
-                ReleaseDate = new DateOnly(
-                    metadata.Track.ReleaseDate.Year,
-                    metadata.Track.ReleaseDate.Month,
-                    metadata.Track.ReleaseDate.Day
-                ),
+                Artists = _mapper.Map<IEnumerable<Projections.ArtistCredits>>(metadata.Track.Artists),
+                ReleaseDate = _mapper.Map<DateOnly>(metadata.Track.ReleaseDate),
+                Album = _mapper.Map<Projections.AlbumCredits>(metadata.Track.Album),
             });
         }
 
@@ -108,19 +100,9 @@ public class RecognizerEndpointController : ControllerBase
         return Ok(new RecognizerResponse{
             TrackId = recognizedTrack.TrackId,
             Title = metadata.Track.Title,
-            Artists = metadata.Track.Artists.Select(x => new Projections.ArtistCredits{
-                ArtistId = x.ArtistId,
-                StageName = x.StageName
-            }),
-            ReleaseDate = new DateOnly(
-                metadata.Track.ReleaseDate.Year,
-                metadata.Track.ReleaseDate.Month,
-                metadata.Track.ReleaseDate.Day
-            ),
-            Album = new Projections.AlbumCredits{
-                AlbumId = metadata.Track.Album.AlbumId,
-                Title = metadata.Track.Album.Title
-            },
+            Artists = _mapper.Map<IEnumerable<Projections.ArtistCredits>>(metadata.Track.Artists),
+            ReleaseDate = _mapper.Map<DateOnly>(metadata.Track.ReleaseDate),
+            Album = _mapper.Map<Projections.AlbumCredits>(metadata.Track.Album),
             CoverUri = cover.CoverUri
         });
    

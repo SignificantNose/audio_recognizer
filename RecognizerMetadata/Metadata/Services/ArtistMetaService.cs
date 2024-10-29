@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Application.Services.Interfaces;
+using AutoMapper;
 using Domain.Entities;
+using Domain.Models;
 using Domain.Shared;
 using Grpc.Core;
 using GrpcMetadata;
@@ -13,21 +15,21 @@ namespace Metadata.Services
     public class ArtistMetaService : GrpcMetadata.ArtistMetadata.ArtistMetadataBase
     {
         private readonly IArtistMetaService _artistService;
+        private readonly IMapper _mapper;
 
-        public ArtistMetaService(IArtistMetaService artistService)
+        public ArtistMetaService(IArtistMetaService artistService, IMapper mapper)
         {
             _artistService = artistService;
+            _mapper = mapper;
         }
 
 
 
         public override async Task<AddArtistMetadataResponse> AddArtistMetadata(AddArtistMetadataRequest request, ServerCallContext context)
         {
-            Result<long> artistIdResult = await _artistService.AddArtistMetadata(
-                new Domain.Models.AddArtistModel{
-                    StageName = request.StageName,
-                    RealName = request.RealName                    
-            });
+            AddArtistModel addModel = _mapper.Map<AddArtistModel>(request); 
+            Result<long> artistIdResult = 
+                await _artistService.AddArtistMetadata(addModel);
 
             if(artistIdResult.IsSuccess){
                 return new AddArtistMetadataResponse{
@@ -47,11 +49,7 @@ namespace Metadata.Services
             if(artistResult.IsSuccess){
                 ArtistMetaV1 artist = artistResult.Value;
                 return new ReadArtistMetadataResponse{
-                    Artist = new ArtistData{
-                        ArtistId = artist.ArtistId,
-                        StageName = artist.StageName,
-                        RealName = artist.RealName
-                    }
+                    Artist = _mapper.Map<ArtistData>(artist)
                 };
             }
             else{
@@ -73,11 +71,9 @@ namespace Metadata.Services
             if(artistsResult.IsSuccess){
                 IEnumerable<ArtistMetaV1> artists = artistsResult.Value;
                 return new GetArtistListByStageNameResponse{
-                    Artists = {artists.Select(artist => new ArtistData{
-                        ArtistId = artist.ArtistId,
-                        StageName = artist.StageName,
-                        RealName = artist.RealName
-                    })}
+                    Artists = {
+                        _mapper.Map<IEnumerable<ArtistData>>(artists)
+                    }
                 }; 
             }
             else{
