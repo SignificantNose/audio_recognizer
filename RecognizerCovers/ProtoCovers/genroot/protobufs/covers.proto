@@ -23,7 +23,7 @@ message ReadCoverMetaRequest{
 }
 
 message ReadCoverMetaResponse{
-    optional string cover_uri = 1;
+    string cover_uri = 1;
 }
 
 
