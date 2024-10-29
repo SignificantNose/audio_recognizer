@@ -34,20 +34,21 @@ namespace GrpcMetadata {
             "YS5BcnRpc3REYXRhUgZhcnRpc3QiQAofR2V0QXJ0aXN0TGlzdEJ5U3RhZ2VO",
             "YW1lUmVxdWVzdBIdCgpzdGFnZV9uYW1lGAEgASgJUglzdGFnZU5hbWUiVgog",
             "R2V0QXJ0aXN0TGlzdEJ5U3RhZ2VOYW1lUmVzcG9uc2USMgoHYXJ0aXN0cxgB",
-            "IAMoCzIYLkdycGNNZXRhZGF0YS5BcnRpc3REYXRhUgdhcnRpc3RzImUKCkFy",
+            "IAMoCzIYLkdycGNNZXRhZGF0YS5BcnRpc3REYXRhUgdhcnRpc3RzIngKCkFy",
             "dGlzdERhdGESGwoJYXJ0aXN0X2lkGAEgASgDUghhcnRpc3RJZBIdCgpzdGFn",
-            "ZV9uYW1lGAIgASgJUglzdGFnZU5hbWUSGwoJcmVhbF9uYW1lGAMgASgJUghy",
-            "ZWFsTmFtZTLaAgoOQXJ0aXN0TWV0YWRhdGESZAoRQWRkQXJ0aXN0TWV0YWRh",
-            "dGESJi5HcnBjTWV0YWRhdGEuQWRkQXJ0aXN0TWV0YWRhdGFSZXF1ZXN0Gicu",
-            "R3JwY01ldGFkYXRhLkFkZEFydGlzdE1ldGFkYXRhUmVzcG9uc2USZwoSUmVh",
-            "ZEFydGlzdE1ldGFkYXRhEicuR3JwY01ldGFkYXRhLlJlYWRBcnRpc3RNZXRh",
-            "ZGF0YVJlcXVlc3QaKC5HcnBjTWV0YWRhdGEuUmVhZEFydGlzdE1ldGFkYXRh",
-            "UmVzcG9uc2USeQoYR2V0QXJ0aXN0TGlzdEJ5U3RhZ2VOYW1lEi0uR3JwY01l",
-            "dGFkYXRhLkdldEFydGlzdExpc3RCeVN0YWdlTmFtZVJlcXVlc3QaLi5HcnBj",
-            "TWV0YWRhdGEuR2V0QXJ0aXN0TGlzdEJ5U3RhZ2VOYW1lUmVzcG9uc2VCcwoQ",
-            "Y29tLkdycGNNZXRhZGF0YUIPQXJ0aXN0bWV0YVByb3RvUAGiAgNHWFiqAgxH",
-            "cnBjTWV0YWRhdGHKAgxHcnBjTWV0YWRhdGHiAhhHcnBjTWV0YWRhdGFcR1BC",
-            "TWV0YWRhdGHqAgxHcnBjTWV0YWRhdGFiBnByb3RvMw=="));
+            "ZV9uYW1lGAIgASgJUglzdGFnZU5hbWUSIAoJcmVhbF9uYW1lGAMgASgJSABS",
+            "CHJlYWxOYW1liAEBQgwKCl9yZWFsX25hbWUy2gIKDkFydGlzdE1ldGFkYXRh",
+            "EmQKEUFkZEFydGlzdE1ldGFkYXRhEiYuR3JwY01ldGFkYXRhLkFkZEFydGlz",
+            "dE1ldGFkYXRhUmVxdWVzdBonLkdycGNNZXRhZGF0YS5BZGRBcnRpc3RNZXRh",
+            "ZGF0YVJlc3BvbnNlEmcKElJlYWRBcnRpc3RNZXRhZGF0YRInLkdycGNNZXRh",
+            "ZGF0YS5SZWFkQXJ0aXN0TWV0YWRhdGFSZXF1ZXN0GiguR3JwY01ldGFkYXRh",
+            "LlJlYWRBcnRpc3RNZXRhZGF0YVJlc3BvbnNlEnkKGEdldEFydGlzdExpc3RC",
+            "eVN0YWdlTmFtZRItLkdycGNNZXRhZGF0YS5HZXRBcnRpc3RMaXN0QnlTdGFn",
+            "ZU5hbWVSZXF1ZXN0Gi4uR3JwY01ldGFkYXRhLkdldEFydGlzdExpc3RCeVN0",
+            "YWdlTmFtZVJlc3BvbnNlQnMKEGNvbS5HcnBjTWV0YWRhdGFCD0FydGlzdG1l",
+            "dGFQcm90b1ABogIDR1hYqgIMR3JwY01ldGFkYXRhygIMR3JwY01ldGFkYXRh",
+            "4gIYR3JwY01ldGFkYXRhXEdQQk1ldGFkYXRh6gIMR3JwY01ldGFkYXRhYgZw",
+            "cm90bzM="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { },
           new pbr::GeneratedClrTypeInfo(null, null, new pbr::GeneratedClrTypeInfo[] {
@@ -57,7 +58,7 @@ namespace GrpcMetadata {
             new pbr::GeneratedClrTypeInfo(typeof(global::GrpcMetadata.ReadArtistMetadataResponse), global::GrpcMetadata.ReadArtistMetadataResponse.Parser, new[]{ "Artist" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::GrpcMetadata.GetArtistListByStageNameRequest), global::GrpcMetadata.GetArtistListByStageNameRequest.Parser, new[]{ "StageName" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::GrpcMetadata.GetArtistListByStageNameResponse), global::GrpcMetadata.GetArtistListByStageNameResponse.Parser, new[]{ "Artists" }, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::GrpcMetadata.ArtistData), global::GrpcMetadata.ArtistData.Parser, new[]{ "ArtistId", "StageName", "RealName" }, null, null, null, null)
+            new pbr::GeneratedClrTypeInfo(typeof(global::GrpcMetadata.ArtistData), global::GrpcMetadata.ArtistData.Parser, new[]{ "ArtistId", "StageName", "RealName" }, new[]{ "RealName" }, null, null, null)
           }));
     }
     #endregion
@@ -1374,14 +1375,28 @@ namespace GrpcMetadata {
 
     /// <summary>Field number for the "real_name" field.</summary>
     public const int RealNameFieldNumber = 3;
-    private string realName_ = "";
+    private readonly static string RealNameDefaultValue = "";
+
+    private string realName_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public string RealName {
-      get { return realName_; }
+      get { return realName_ ?? RealNameDefaultValue; }
       set {
         realName_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
       }
+    }
+    /// <summary>Gets whether the "real_name" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool HasRealName {
+      get { return realName_ != null; }
+    }
+    /// <summary>Clears the value of the "real_name" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void ClearRealName() {
+      realName_ = null;
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -1411,7 +1426,7 @@ namespace GrpcMetadata {
       int hash = 1;
       if (ArtistId != 0L) hash ^= ArtistId.GetHashCode();
       if (StageName.Length != 0) hash ^= StageName.GetHashCode();
-      if (RealName.Length != 0) hash ^= RealName.GetHashCode();
+      if (HasRealName) hash ^= RealName.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
       }
@@ -1438,7 +1453,7 @@ namespace GrpcMetadata {
         output.WriteRawTag(18);
         output.WriteString(StageName);
       }
-      if (RealName.Length != 0) {
+      if (HasRealName) {
         output.WriteRawTag(26);
         output.WriteString(RealName);
       }
@@ -1460,7 +1475,7 @@ namespace GrpcMetadata {
         output.WriteRawTag(18);
         output.WriteString(StageName);
       }
-      if (RealName.Length != 0) {
+      if (HasRealName) {
         output.WriteRawTag(26);
         output.WriteString(RealName);
       }
@@ -1480,7 +1495,7 @@ namespace GrpcMetadata {
       if (StageName.Length != 0) {
         size += 1 + pb::CodedOutputStream.ComputeStringSize(StageName);
       }
-      if (RealName.Length != 0) {
+      if (HasRealName) {
         size += 1 + pb::CodedOutputStream.ComputeStringSize(RealName);
       }
       if (_unknownFields != null) {
@@ -1501,7 +1516,7 @@ namespace GrpcMetadata {
       if (other.StageName.Length != 0) {
         StageName = other.StageName;
       }
-      if (other.RealName.Length != 0) {
+      if (other.HasRealName) {
         RealName = other.RealName;
       }
       _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);

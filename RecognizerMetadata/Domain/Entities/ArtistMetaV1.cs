@@ -4,6 +4,6 @@ namespace Domain.Entities
     {
         public long ArtistId { get; init; }
         public string StageName { get; init; }
-        public string RealName { get; init; }    
+        public string? RealName { get; init; }    
     }
 }

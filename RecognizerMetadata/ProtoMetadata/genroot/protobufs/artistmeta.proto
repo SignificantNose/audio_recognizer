@@ -36,5 +36,5 @@ message GetArtistListByStageNameResponse{
 message ArtistData{
   int64 artist_id = 1;
   string stage_name = 2;
-  string real_name = 3;
+  optional string real_name = 3;
 }
