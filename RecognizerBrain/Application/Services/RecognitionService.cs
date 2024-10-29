@@ -37,6 +37,9 @@ public class RecognitionService : IRecognitionService
             Duration = recognitionData.Duration
         }, DURATION_DIFF_THRESHOLD);
 
-        return recognizedTrack;
+        // todo: figure out if it is only the primitive type thingy or not
+        return recognizedTrack is not null 
+            ? Result.Success<long>(recognizedTrack.Value) 
+            : Result.Failure<long>(Error.NullValue);
     }
 }
