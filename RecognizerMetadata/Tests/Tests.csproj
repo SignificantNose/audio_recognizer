@@ -26,6 +26,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Application\Application.csproj" />
+    <ProjectReference Include="..\Metadata\Metadata.csproj" />
   </ItemGroup>
 
 </Project>
