@@ -12,12 +12,12 @@ using GrpcMetadata;
 
 namespace Metadata.Services
 {
-    public class TrackMetaService : GrpcMetadata.TrackMetadata.TrackMetadataBase
+    public class TrackMetadata : GrpcMetadata.TrackMetadata.TrackMetadataBase
     {
         private readonly ITrackMetaService _trackService;
         private readonly IMapper _mapper;
 
-        public TrackMetaService(ITrackMetaService trackService, IMapper mapper)
+        public TrackMetadata(ITrackMetaService trackService, IMapper mapper)
         {
             _trackService = trackService;
             _mapper = mapper;

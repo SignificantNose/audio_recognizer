@@ -12,12 +12,12 @@ using GrpcMetadata;
 
 namespace Metadata.Services
 {
-    public class ArtistMetaService : GrpcMetadata.ArtistMetadata.ArtistMetadataBase
+    public class ArtistMetadata : GrpcMetadata.ArtistMetadata.ArtistMetadataBase
     {
         private readonly IArtistMetaService _artistService;
         private readonly IMapper _mapper;
 
-        public ArtistMetaService(IArtistMetaService artistService, IMapper mapper)
+        public ArtistMetadata(IArtistMetaService artistService, IMapper mapper)
         {
             _artistService = artistService;
             _mapper = mapper;
