@@ -13,10 +13,10 @@ namespace Infrastructure.Migrations
         {
             const string seed_data = 
 """
-insert into recognition_nodes (node_id, track_id, identification_hash, duration)
-values (1, 9, 1551671594, 285)
-     , (2, 5, -445321945, 256)
-     , (3, 3, 828419367, 226);
+insert into recognition_nodes (track_id, identification_hash, duration)
+values (9, 1551671594, 285)
+     , (5, -445321945, 256)
+     , (3, 828419367, 226);
 """;
             
             Execute.Sql(seed_data);

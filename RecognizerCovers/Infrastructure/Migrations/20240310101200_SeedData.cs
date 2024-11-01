@@ -13,10 +13,10 @@ namespace Infrastructure.Migrations
         {
             const string seed_data = 
 """
-   insert into cover_meta (cover_id, jpg_uri, png_uri)
-   values (1, 'https://coverartarchive.org/release/5e658ccb-cdfe-4e3c-91f7-79299ee45027/32488694384-500.jpg', null)
-        , (2, 'http://coverartarchive.org/release/2bea201a-445c-4bb9-8ce4-701cb47cd3b9/34236021385-500.jpg', null)
-        , (3, 'https://coverartarchive.org/release/a34e7ae0-9355-469b-ad32-9564b851623c/39378663080-500.jpg', null);
+   insert into cover_meta (jpg_uri, png_uri)
+   values ('https://coverartarchive.org/release/5e658ccb-cdfe-4e3c-91f7-79299ee45027/32488694384-500.jpg', null)
+        , ('http://coverartarchive.org/release/2bea201a-445c-4bb9-8ce4-701cb47cd3b9/34236021385-500.jpg', null)
+        , ('https://coverartarchive.org/release/a34e7ae0-9355-469b-ad32-9564b851623c/39378663080-500.jpg', null);
 """;
 
             Execute.Sql(seed_data);
