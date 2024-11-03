@@ -46,6 +46,7 @@ public class RecognizerEndpointController : ControllerBase
                 _addresses.BrainAddress, 
                 recognitionData);
         if(!recognitionResult.IsSuccess){
+            _logger.LogError(recognitionResult.Error.Message);
             return StatusCode(StatusCodes.Status503ServiceUnavailable, "Recognition service is unavailable.");
         }
 

@@ -25,6 +25,10 @@ namespace RecognizerGateway.Services
             }
             catch(RpcException ex){
                 // possibly rich error handling here?
+                // not sure if THIS is okay, but now I do not want to think about it, so:
+                if(ex.StatusCode == StatusCode.NotFound){
+                    return Result.Success<RecognizeTrackResponse>(new RecognizeTrackResponse{});
+                }
                 return Result.Failure<RecognizeTrackResponse>(new Error("BrainService.Unknown", ex.Message));
             }
         }
