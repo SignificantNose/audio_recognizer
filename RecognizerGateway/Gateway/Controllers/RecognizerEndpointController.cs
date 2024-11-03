@@ -46,7 +46,7 @@ public class RecognizerEndpointController : ControllerBase
                 _addresses.BrainAddress, 
                 recognitionData);
         if(!recognitionResult.IsSuccess){
-            StatusCode(StatusCodes.Status503ServiceUnavailable, "Recognition service is unavailable.");
+            return StatusCode(StatusCodes.Status503ServiceUnavailable, "Recognition service is unavailable.");
         }
 
         RecognizeTrackResponse recognizedTrack = recognitionResult.Value;
