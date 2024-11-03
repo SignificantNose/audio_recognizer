@@ -1,0 +1,26 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <IsAspireHost>true</IsAspireHost>
+    <UserSecretsId>017dfa69-aa4d-412d-8dd9-12d8a34c789a</UserSecretsId>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Aspire.Hosting.AppHost" Version="8.2.2" />
+    <PackageReference Include="Aspire.Hosting.PostgreSQL" Version="8.2.2" />
+    <PackageReference Include="Nall.Aspire.Hosting.DependsOn" Version="1.0.1" />
+    <PackageReference Include="Nall.Aspire.Hosting.DependsOn.PostgreSQL" Version="1.0.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\RecognizerBrain\Brain\Brain.csproj" />
+    <ProjectReference Include="..\..\RecognizerCovers\Covers\Covers.csproj" />
+    <ProjectReference Include="..\..\RecognizerMetadata\Metadata\Metadata.csproj" />
+    <ProjectReference Include="..\..\RecognizerGateway\Gateway\Gateway.csproj" />
+  </ItemGroup>
+
+</Project>

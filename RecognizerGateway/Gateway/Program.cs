@@ -1,6 +1,7 @@
 using RecognizerGateway.Settings;
 
 var builder = WebApplication.CreateBuilder(args);
+builder.AddServiceDefaults();
 
 // Add services to the container.
 
@@ -13,6 +14,7 @@ builder.Services.AddAutoMapper(typeof(Program));
 builder.Services.Configure<MicroserviceAddresses>(builder.Configuration.GetSection(nameof(MicroserviceAddresses)));
 
 var app = builder.Build();
+app.MapDefaultEndpoints();
 
 // Configure the HTTP request pipeline.
 // if (app.Environment.IsDevelopment())

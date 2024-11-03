@@ -21,6 +21,7 @@
     <ProjectReference Include="..\..\RecognizerBrain\ProtoBrain\ProtoBrain.csproj" />
     <ProjectReference Include="..\..\RecognizerCovers\ProtoCovers\ProtoCovers.csproj" />
     <ProjectReference Include="..\..\RecognizerMetadata\ProtoMetadata\ProtoMetadata.csproj" />
+    <ProjectReference Include="..\..\RecognizerAspire\RecognizerAspire.ServiceDefaults\RecognizerAspire.ServiceDefaults.csproj" />
   </ItemGroup>
 
 </Project>
