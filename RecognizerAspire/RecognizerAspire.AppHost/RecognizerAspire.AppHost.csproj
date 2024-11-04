@@ -10,6 +10,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Aspire.Hosting" Version="8.2.2" />
     <PackageReference Include="Aspire.Hosting.AppHost" Version="8.2.2" />
     <PackageReference Include="Aspire.Hosting.PostgreSQL" Version="8.2.2" />
     <PackageReference Include="Nall.Aspire.Hosting.DependsOn" Version="1.0.1" />

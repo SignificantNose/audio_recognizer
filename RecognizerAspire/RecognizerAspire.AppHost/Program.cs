@@ -2,10 +2,19 @@ using Microsoft.Extensions.Configuration;
 
 var builder = DistributedApplication.CreateBuilder(args);
 
-IConfigurationSection containerParams = builder.Configuration.GetSection("ContainerParams");
-string bindMountDir = containerParams.GetSection("DbBindMountDir").Value;
-IConfigurationSection bindDirNames = builder.Configuration.GetSection("BindDirNames");
+// IConfigurationSection containerParams = builder.Configuration.GetSection("ContainerParams");
+// string bindMountDir = containerParams.GetSection("DbBindMountDir").Value;
+// IConfigurationSection bindDirNames = builder.Configuration.GetSection("BindDirNames");
 
+var grafana = builder.AddContainer("grafana", "grafana/grafana")
+    .WithBindMount("../grafana/config", "/etc/grafana")
+    .WithBindMount("../grafana/dashboards", "/var/lib/grafana/dashboards")
+    .WithEndpoint(3000, 3000, "http", "grafana-http")
+    ;
+var prometheus = builder.AddContainer("prometheus", "prom/prometheus")
+    .WithBindMount("../prometheus", "/etc/prometheus")
+    .WithEndpoint(9090, 9090)
+    ;
 
 
 string brainDbName = "recognizer";
@@ -14,9 +23,11 @@ var brainDb = builder.AddPostgres("pgBrain")
                     // .WithDataBindMount(bindMountDir+ bindDirNames.GetSection("Brain").Value)
                     .AddDatabase(brainDbName)
                     .WithHealthCheck();
-var brain = builder.AddProject<Projects.Brain>("brain-svc")
+var brain = builder.AddProject<Projects.Brain>("svcbrain")
                 .WithEnvironment("InfrastructureOptions__PostgresConnectionString", brainDb.Resource.ConnectionStringExpression)
+                .WithEnvironment("GRAFANA_URL", grafana.GetEndpoint("grafana-http"))
                 .WaitFor(brainDb);
+
 
 
 string coversDbName = "covers";
@@ -25,8 +36,9 @@ var coversDb = builder.AddPostgres("pgCovers")
                     // .WithDataBindMount(bindMountDir + bindDirNames.GetSection("Covers").Value)
                     .AddDatabase(coversDbName)
                     .WithHealthCheck();
-var covers = builder.AddProject<Projects.Covers>("covers-svc")
+var covers = builder.AddProject<Projects.Covers>("svccovers")
                     .WithEnvironment("InfrastructureOptions__PostgresConnectionString", coversDb.Resource.ConnectionStringExpression)
+                    .WithEnvironment("GRAFANA_URL", grafana.GetEndpoint("grafana-http"))
                     .WaitFor(coversDb);
 
 string metadataDbName = "metadata";
@@ -35,13 +47,22 @@ var metadataDb = builder.AddPostgres("pgMetadata")
                     // .WithDataBindMount(bindMountDir + bindDirNames.GetSection("Metadata").Value)
                     .AddDatabase(metadataDbName)
                     .WithHealthCheck();
-var metadata = builder.AddProject<Projects.Metadata>("metadata-svc")
+var metadata = builder.AddProject<Projects.Metadata>("svcmetadata")
                     .WithEnvironment("InfrastructureOptions__PostgresConnectionString", metadataDb.Resource.ConnectionStringExpression)
+                    .WithEnvironment("GRAFANA_URL", grafana.GetEndpoint("grafana-http"))
                     .WaitFor(metadataDb);
 
-builder.AddProject<Projects.Gateway>("gateway")
+var gateway = builder.AddProject<Projects.Gateway>("gateway")
     .WithReference(brain)
+    // .WithEnvironment("MicroserviceAddresses__BrainAddress", "https://brain-svc")
     .WithReference(covers)
-    .WithReference(metadata);
+    // .WithEnvironment("MicroserviceAddresses__CoverAddress", "https://cover-svc")    
+    .WithReference(metadata)
+    // .WithEnvironment("MicroserviceAddresses__MetadataAddress", "https://metadata-svc")
+    .WithEnvironment("GRAFANA_URL", grafana.GetEndpoint("grafana-http"));
+    ;
+
+prometheus.WaitFor(covers).WaitFor(metadata).WaitFor(brain).WaitFor(gateway);
+grafana.WaitFor(prometheus);
 
 builder.Build().Run();
