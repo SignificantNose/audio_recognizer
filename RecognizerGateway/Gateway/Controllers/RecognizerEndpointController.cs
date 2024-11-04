@@ -1,5 +1,6 @@
 using System.Diagnostics.Metrics;
 using AutoMapper;
+using Gateway.Services.Interfaces;
 using Grpc.Net.Client;
 using GrpcBrain;
 using GrpcCovers;
@@ -22,17 +23,24 @@ public class RecognizerEndpointController : ControllerBase
     private readonly MicroserviceAddresses _addresses;
     private readonly IMapper _mapper;
     private readonly IMeterFactory _meterFactory;
+    private readonly IBrainService _brainService;
+    private readonly IMetadataService _metadataService;
+    private readonly ICoversService _coversService;
 
     public RecognizerEndpointController(
         ILogger<RecognizerEndpointController> logger,
-        IOptions<MicroserviceAddresses> addresses,
         IMapper mapper,
-        IMeterFactory meterFactory)
+        IMeterFactory meterFactory,
+        IBrainService brainService,
+        IMetadataService metadataService,
+        ICoversService coversService)
     {
         _logger = logger;
-        _addresses = addresses.Value;
         _mapper = mapper;
         _meterFactory = meterFactory;
+        _brainService = brainService;
+        _metadataService = metadataService;
+        _coversService = coversService;
     }
 
     // [HttpGet(Name = "GetWeatherForecast")]
@@ -41,13 +49,12 @@ public class RecognizerEndpointController : ControllerBase
     //     return Enumerable.Range(1, 5).Select(index => index+1
     //     ).ToArray();
     // }
-    [HttpPost(Name = "endp")]
+    [HttpPost("recognizeTrack")]
     public async Task<IActionResult> RecognizeTrack(RecognizeTrackModel recognitionData)
     {
         // 1. Recognize track
         Result<RecognizeTrackResponse> recognitionResult = 
-            await BrainService.Recognize(
-                _addresses.BrainAddress, 
+            await _brainService.RecognizeAsync( 
                 recognitionData);
         if(!recognitionResult.IsSuccess){
             _logger.LogError("Error occurred while sending request to recognition microservice: {Message}.", recognitionResult.Error.Message);
@@ -68,8 +75,7 @@ public class RecognizerEndpointController : ControllerBase
 
         // 2. Fetch track metadata
         Result<ReadTrackMetadataResponse> metadataResult = 
-            await MetadataService.FindMetadata(
-                _addresses.MetadataAddress, 
+            await _metadataService.FindMetadataAsync(
                 trackId);
         if(!metadataResult.IsSuccess){
             _logger.LogError("Error occurred while sending request to metadata microservice: {Message}.", metadataResult.Error.Message);
@@ -92,8 +98,7 @@ public class RecognizerEndpointController : ControllerBase
 
         // 3. Fetch cover art data
         Result<ReadCoverMetaResponse> coverResult = 
-            await CoversService.FindCover(
-                _addresses.CoversAddress, 
+            await _coversService.FindCoverAsync(
                 metadata.Track.CoverArtId, 
                 GrpcCovers.CoverType.CoverJpg);
         
@@ -118,5 +123,95 @@ public class RecognizerEndpointController : ControllerBase
             CoverUri = cover.CoverUri
         });
    
+    }
+
+    [HttpPost("add/album")]
+    public async Task<IActionResult> AddAlbum(string title, IEnumerable<long> artistIds, int releaseDay, int releaseMonth, int releaseYear){
+        var addResult = await _metadataService.AddAlbumAsync(
+            new GrpcMetadata.AddAlbumMetadataRequest{
+                Title = title,
+                ArtistIds = {artistIds},
+                // todo insert mapper from other endpoints
+                ReleaseDate = new Date
+                {
+                    Day = releaseDay,
+                    Month = releaseMonth,
+                    Year = releaseYear
+                }
+            });
+
+        if(!addResult.IsSuccess){
+            _logger.LogError("Error occurred while sending request to metadata microservice: {Message}.", addResult.Error.Message);
+            // well, not really, but for now this:
+            return StatusCode(StatusCodes.Status503ServiceUnavailable, "Metadata service is unavailable.");
+        }
+
+        return Ok(addResult.Value.AlbumId);
+    }
+
+    [HttpPost("add/artist")]
+    public async Task<IActionResult> AddArtist(string stageName, string? realName){
+        
+        var addTrackRequest = new AddArtistMetadataRequest{
+                StageName = stageName,
+                RealName = realName is not null ? realName : ""
+            };
+        if(realName is null){
+            addTrackRequest.ClearRealName();
+        }
+        var addResult = await _metadataService.AddArtistAsync(
+            addTrackRequest
+            );
+
+        if(!addResult.IsSuccess){
+            _logger.LogError("Error occurred while sending request to metadata microservice: {Message}.", addResult.Error.Message);
+            // well, not really, but for now this:
+            return StatusCode(StatusCodes.Status503ServiceUnavailable, "Metadata service is unavailable.");
+        }
+
+        return Ok(addResult.Value.ArtistId);
+    }
+
+
+    [HttpPost("add/track")]
+    public async Task<IActionResult> AddTrack(
+        string title, 
+        IEnumerable<long> artistIds, 
+        int releaseDay,
+        int releaseMonth, 
+        int releaseYear,
+        long? albumId, 
+        long? coverArtId)    
+    {
+
+        var addTrackRequest = new AddTrackMetadataRequest{
+                Title = title,
+                ArtistIds = {artistIds},
+                ReleaseDate = new Date{
+                    Day = releaseDay,
+                    Month = releaseMonth,
+                    Year = releaseYear
+                },
+                AlbumId = albumId is not null ? albumId.Value : 0,
+                CoverArtId = coverArtId is not null ? coverArtId.Value : 0
+            };
+
+        if (!albumId.HasValue){
+            addTrackRequest.ClearAlbumId();
+        }
+        if(!coverArtId.HasValue){
+            addTrackRequest.ClearCoverArtId();
+        }
+
+        var addResult = await _metadataService.AddTrackAsync(
+            addTrackRequest
+        );
+        if(!addResult.IsSuccess){
+            _logger.LogError("Error occurred while sending request to metadata microservice: {Message}.", addResult.Error.Message);
+            // well, not really, but for now this:
+            return StatusCode(StatusCodes.Status503ServiceUnavailable, "Metadata service is unavailable.");
+        }
+
+        return Ok(addResult.Value.TrackId);
     }
 }

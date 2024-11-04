@@ -1,3 +1,5 @@
+using Gateway.Services.Interfaces;
+using RecognizerGateway.Services;
 using RecognizerGateway.Settings;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -6,6 +8,9 @@ builder.Services.AddOpenTelemetry().WithMetrics(x => {
     x.AddMeter("RecognitionGateway");
 });
 builder.Services.AddMetrics();
+builder.Services.AddScoped<IBrainService, BrainService>();
+builder.Services.AddScoped<ICoversService, CoversService>();
+builder.Services.AddScoped<IMetadataService, MetadataService>();
 
 // Add services to the container.
 

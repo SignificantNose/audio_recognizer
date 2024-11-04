@@ -51,8 +51,8 @@ services:
       POSTGRES_USER: "postgres"
       POSTGRES_PASSWORD: "VKJ2YUkZY!uGvp71evnGq9"
       POSTGRES_DB: "recognizer"
-      # OTEL_EXPORTER_OTLP_ENDPOINT: "http://aspire-dashboard:18889"
-      # OTEL_SERVICE_NAME: "pgBrain"
+      OTEL_EXPORTER_OTLP_ENDPOINT: "http://aspire-dashboard:18889"
+      OTEL_SERVICE_NAME: "pgBrain"
     ports:
     - target: 5432
       published: 55022
@@ -97,8 +97,8 @@ services:
       POSTGRES_USER: "postgres"
       POSTGRES_PASSWORD: "PZKoqryUR50ZXr!HXPpj8j"
       POSTGRES_DB: "covers"
-      # OTEL_EXPORTER_OTLP_ENDPOINT: "http://aspire-dashboard:18889"
-      # OTEL_SERVICE_NAME: "pgCovers"
+      OTEL_EXPORTER_OTLP_ENDPOINT: "http://aspire-dashboard:18889"
+      OTEL_SERVICE_NAME: "pgCovers"
     ports:
     - target: 5432
       published: 55023
@@ -143,8 +143,8 @@ services:
       POSTGRES_USER: "postgres"
       POSTGRES_PASSWORD: "bkasktOf1py790kAVgwXEB"
       POSTGRES_DB: "metadata"
-      # OTEL_EXPORTER_OTLP_ENDPOINT: "http://aspire-dashboard:18889"
-      # OTEL_SERVICE_NAME: "pgMetadata"
+      OTEL_EXPORTER_OTLP_ENDPOINT: "http://aspire-dashboard:18889"
+      OTEL_SERVICE_NAME: "pgMetadata"
     ports:
     - target: 5432
       published: 55021
