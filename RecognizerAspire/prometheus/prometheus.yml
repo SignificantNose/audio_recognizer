@@ -4,13 +4,13 @@ global:
 scrape_configs:
   - job_name: 'brain'
     static_configs:
-      - targets: ['host.docker.internal:55002'] # hard-coded port matches launchSettings.json
+      - targets: ['svcbrain:50002'] # hard-coded port matches launchSettings.json
   - job_name: 'covers'
     static_configs:
-      - targets: ['host.docker.internal:55003'] # hard-coded port matches launchSettings.json
+      - targets: ['svccovers:50003'] # hard-coded port matches launchSettings.json
   - job_name: 'metadata'
     static_configs:
-      - targets: ['host.docker.internal:55001'] # hard-coded port matches launchSettings.json
+      - targets: ['svcmetadata:50001'] # hard-coded port matches launchSettings.json
   - job_name: 'gateway'
     static_configs:
-      - targets: ['host.docker.internal:55000'] # hard-coded port matches launchSettings.json
+      - targets: ['gateway:50000'] # hard-coded port matches launchSettings.json

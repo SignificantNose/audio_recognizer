@@ -18,7 +18,7 @@ var prometheus = builder.AddContainer("prometheus", "prom/prometheus")
 
 
 string brainDbName = "recognizer";
-var brainDb = builder.AddPostgres("pgBrain")
+var brainDb = builder.AddPostgres("pgBrain", port: 55022)
                     .WithEnvironment("POSTGRES_DB", brainDbName)
                     // .WithDataBindMount(bindMountDir+ bindDirNames.GetSection("Brain").Value)
                     .AddDatabase(brainDbName)
@@ -31,7 +31,7 @@ var brain = builder.AddProject<Projects.Brain>("svcbrain")
 
 
 string coversDbName = "covers";
-var coversDb = builder.AddPostgres("pgCovers")
+var coversDb = builder.AddPostgres("pgCovers", port: 55023)
                     .WithEnvironment("POSTGRES_DB", coversDbName)
                     // .WithDataBindMount(bindMountDir + bindDirNames.GetSection("Covers").Value)
                     .AddDatabase(coversDbName)
@@ -42,7 +42,7 @@ var covers = builder.AddProject<Projects.Covers>("svccovers")
                     .WaitFor(coversDb);
 
 string metadataDbName = "metadata";
-var metadataDb = builder.AddPostgres("pgMetadata")
+var metadataDb = builder.AddPostgres("pgMetadata", port: 55021)
                     .WithEnvironment("POSTGRES_DB", metadataDbName)
                     // .WithDataBindMount(bindMountDir + bindDirNames.GetSection("Metadata").Value)
                     .AddDatabase(metadataDbName)
