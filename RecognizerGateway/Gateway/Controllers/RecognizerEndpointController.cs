@@ -1,3 +1,4 @@
+using System.Diagnostics.Metrics;
 using AutoMapper;
 using Grpc.Net.Client;
 using GrpcBrain;
@@ -20,15 +21,18 @@ public class RecognizerEndpointController : ControllerBase
     private readonly ILogger<RecognizerEndpointController> _logger;
     private readonly MicroserviceAddresses _addresses;
     private readonly IMapper _mapper;
+    private readonly IMeterFactory _meterFactory;
 
     public RecognizerEndpointController(
         ILogger<RecognizerEndpointController> logger,
         IOptions<MicroserviceAddresses> addresses,
-        IMapper mapper)
+        IMapper mapper,
+        IMeterFactory meterFactory)
     {
         _logger = logger;
         _addresses = addresses.Value;
         _mapper = mapper;
+        _meterFactory = meterFactory;
     }
 
     // [HttpGet(Name = "GetWeatherForecast")]
@@ -50,9 +54,14 @@ public class RecognizerEndpointController : ControllerBase
             return StatusCode(StatusCodes.Status503ServiceUnavailable, "Recognition service is unavailable.");
         }
 
+        var meter = _meterFactory.Create("RecognitionGateway");
         RecognizeTrackResponse recognizedTrack = recognitionResult.Value;
         if(!recognizedTrack.HasTrackId){
+            meter.CreateCounter<int>("failed_recognitions").Add(1);
             return Ok();
+        }
+        else{
+            meter.CreateCounter<int>("successful_recognitions").Add(1);
         }
 
         long trackId = recognizedTrack.TrackId;

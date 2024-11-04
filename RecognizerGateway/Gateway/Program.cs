@@ -2,6 +2,10 @@ using RecognizerGateway.Settings;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.AddServiceDefaults();
+builder.Services.AddOpenTelemetry().WithMetrics(x => {
+    x.AddMeter("RecognitionGateway");
+});
+builder.Services.AddMetrics();
 
 // Add services to the container.
 
