@@ -54,12 +54,18 @@ var metadata = builder.AddProject<Projects.Metadata>("svcmetadata")
 
 var gateway = builder.AddProject<Projects.Gateway>("gateway")
     .WithReference(brain)
-    // .WithEnvironment("MicroserviceAddresses__BrainAddress", "https://brain-svc")
+    // .WaitFor(brain)
+    // .WithEnvironment("MicroserviceAddresses__BrainAddress", "https://svcbrain")
     .WithReference(covers)
-    // .WithEnvironment("MicroserviceAddresses__CoverAddress", "https://cover-svc")    
+    // .WaitFor(covers)
+    // .WithEnvironment("MicroserviceAddresses__CoverAddress", "https://svccover")    
     .WithReference(metadata)
-    // .WithEnvironment("MicroserviceAddresses__MetadataAddress", "https://metadata-svc")
-    .WithEnvironment("GRAFANA_URL", grafana.GetEndpoint("grafana-http"));
+    // .WaitFor(metadata)
+    // .WithEnvironment("MicroserviceAddresses__MetadataAddress", "https://svcmetadata")
+    .WithEnvironment("GRAFANA_URL", grafana.GetEndpoint("grafana-http"))
+    .WaitFor(brain)
+    .WaitFor(covers)
+    .WaitFor(metadata)
     ;
 
 prometheus.WaitFor(covers).WaitFor(metadata).WaitFor(brain).WaitFor(gateway);

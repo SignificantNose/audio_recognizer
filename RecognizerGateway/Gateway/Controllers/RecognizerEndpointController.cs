@@ -54,6 +54,7 @@ public class RecognizerEndpointController : ControllerBase
             return StatusCode(StatusCodes.Status503ServiceUnavailable, "Recognition service is unavailable.");
         }
 
+        _logger.LogInformation("here");
         var meter = _meterFactory.Create("RecognitionGateway");
         RecognizeTrackResponse recognizedTrack = recognitionResult.Value;
         if(!recognizedTrack.HasTrackId){
