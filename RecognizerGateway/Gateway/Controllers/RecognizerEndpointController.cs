@@ -1,5 +1,6 @@
 using System.Diagnostics.Metrics;
 using AutoMapper;
+using Gateway.Authentication;
 using Gateway.Services.Interfaces;
 using Grpc.Net.Client;
 using GrpcBrain;
@@ -126,6 +127,7 @@ public class RecognizerEndpointController : ControllerBase
     }
 
     [HttpPost("add/album")]
+    [ServiceFilter(typeof(ApiKeyAuthFilter))]
     public async Task<IActionResult> AddAlbum(string title, IEnumerable<long> artistIds, int releaseDay, int releaseMonth, int releaseYear){
         var addResult = await _metadataService.AddAlbumAsync(
             new GrpcMetadata.AddAlbumMetadataRequest{
@@ -150,6 +152,7 @@ public class RecognizerEndpointController : ControllerBase
     }
 
     [HttpPost("add/artist")]
+    [ServiceFilter(typeof(ApiKeyAuthFilter))]
     public async Task<IActionResult> AddArtist(string stageName, string? realName){
         
         var addTrackRequest = new AddArtistMetadataRequest{
@@ -174,6 +177,7 @@ public class RecognizerEndpointController : ControllerBase
 
 
     [HttpPost("add/track")]
+    [ServiceFilter(typeof(ApiKeyAuthFilter))]
     public async Task<IActionResult> AddTrack(
         string title, 
         IEnumerable<long> artistIds, 
