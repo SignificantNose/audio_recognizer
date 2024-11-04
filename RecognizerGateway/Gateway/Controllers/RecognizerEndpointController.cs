@@ -50,11 +50,10 @@ public class RecognizerEndpointController : ControllerBase
                 _addresses.BrainAddress, 
                 recognitionData);
         if(!recognitionResult.IsSuccess){
-            _logger.LogError(recognitionResult.Error.Message);
+            _logger.LogError("Error occurred while sending request to recognition microservice: {Message}.", recognitionResult.Error.Message);
             return StatusCode(StatusCodes.Status503ServiceUnavailable, "Recognition service is unavailable.");
         }
 
-        _logger.LogInformation("here");
         var meter = _meterFactory.Create("RecognitionGateway");
         RecognizeTrackResponse recognizedTrack = recognitionResult.Value;
         if(!recognizedTrack.HasTrackId){
@@ -73,6 +72,7 @@ public class RecognizerEndpointController : ControllerBase
                 _addresses.MetadataAddress, 
                 trackId);
         if(!metadataResult.IsSuccess){
+            _logger.LogError("Error occurred while sending request to metadata microservice: {Message}.", metadataResult.Error.Message);
             return Ok(new RecognizerResponse{
                 TrackId = trackId
             });
@@ -98,6 +98,7 @@ public class RecognizerEndpointController : ControllerBase
                 GrpcCovers.CoverType.CoverJpg);
         
         if(!coverResult.IsSuccess){
+            _logger.LogError("Error occurred while sending request to covers microservice: {Message}.", coverResult.Error.Message);
             return Ok(new RecognizerResponse{
                 TrackId = trackId,
                 Title = metadata.Track.Title,

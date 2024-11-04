@@ -1,4 +1,5 @@
 using Application.Extensions;
+using Covers.Interceptors;
 using Covers.Services;
 using Infrastructure.Extensions;
 
@@ -6,7 +7,11 @@ var builder = WebApplication.CreateBuilder(args);
 builder.AddServiceDefaults();
 
 // Add services to the container.
-builder.Services.AddGrpc();
+builder.Services.AddGrpc(options => {
+    options.EnableDetailedErrors = true;
+    options.Interceptors.Add<ErrorInterceptor>();
+    options.Interceptors.Add<LoggingInterceptor>();
+});
 builder.Services.AddAutoMapper(typeof(Program));
 
 builder.Services

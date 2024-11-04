@@ -1,5 +1,6 @@
 using Application.Extensions;
 using Infrastructure.Extensions;
+using Metadata.Interceptors;
 using Metadata.Services;
 using Npgsql;
 
@@ -7,7 +8,11 @@ var builder = WebApplication.CreateBuilder(args);
 builder.AddServiceDefaults();
 
 // Add services to the container.
-builder.Services.AddGrpc();
+builder.Services.AddGrpc(options => {
+    options.EnableDetailedErrors = true;
+    options.Interceptors.Add<ErrorInterceptor>();
+    options.Interceptors.Add<LoggingInterceptor>();
+});
 builder.Services.AddAutoMapper(typeof(Program));
 
 // var loggerFactory = LoggerFactory.Create(builder => builder.AddConsole());

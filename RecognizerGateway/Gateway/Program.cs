@@ -17,8 +17,17 @@ builder.Services.AddAutoMapper(typeof(Program));
 
 builder.Services.Configure<MicroserviceAddresses>(builder.Configuration.GetSection(nameof(MicroserviceAddresses)));
 
+builder.Services.AddHttpLogging(logging => {
+    logging.LoggingFields = 
+        Microsoft.AspNetCore.HttpLogging.HttpLoggingFields.ResponseBody | 
+        Microsoft.AspNetCore.HttpLogging.HttpLoggingFields.RequestBody;
+    logging.RequestBodyLogLimit = 4096;
+});
+
 var app = builder.Build();
 app.MapDefaultEndpoints();
+
+app.UseHttpLogging();
 
 // Configure the HTTP request pipeline.
 // if (app.Environment.IsDevelopment())
