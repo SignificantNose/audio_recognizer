@@ -1,0 +1,206 @@
+services:
+  aspire-dashboard:
+    container_name: "aspire-dashboard"
+    image: "mcr.microsoft.com/dotnet/aspire-dashboard:8.0"
+    environment:
+      DOTNET_DASHBOARD_UNSECURED_ALLOW_ANONYMOUS: "true"
+    ports:
+    - target: 18888
+      published: 18888
+    restart: unless-stopped
+
+  grafana:
+    container_name: "grafana"
+    image: "grafana/grafana:latest"
+    environment:
+      OTEL_EXPORTER_OTLP_ENDPOINT: "http://aspire-dashboard:18889"
+      OTEL_SERVICE_NAME: "grafana"
+    ports:
+    - target: 3000
+      published: 3000
+    restart: unless-stopped
+    volumes:
+      - type: bind
+        source: ../../grafana/config
+        target: /etc/grafana
+      - type: bind
+        source: ../../grafana/dashboards
+        target: /var/lib/grafana/dashboards
+
+  prometheus:
+    container_name: "prometheus"
+    image: "prom/prometheus:latest"
+    environment:
+      OTEL_EXPORTER_OTLP_ENDPOINT: "http://aspire-dashboard:18889"
+      OTEL_SERVICE_NAME: "prometheus"
+    ports:
+    - target: 9090
+      published: 9090
+    restart: unless-stopped
+    volumes:
+      - type: bind
+        source: ../../prometheus
+        target: /etc/prometheus
+
+  pgBrain:
+    container_name: "pgBrain"
+    image: "docker.io/library/postgres:17.0"
+    environment:
+      POSTGRES_HOST_AUTH_METHOD: "scram-sha-256"
+      POSTGRES_INITDB_ARGS: "--auth-host=scram-sha-256 --auth-local=scram-sha-256"
+      POSTGRES_USER: "postgres"
+      POSTGRES_PASSWORD: "VKJ2YUkZY!uGvp71evnGq9"
+      POSTGRES_DB: "recognizer"
+      # OTEL_EXPORTER_OTLP_ENDPOINT: "http://aspire-dashboard:18889"
+      # OTEL_SERVICE_NAME: "pgBrain"
+    ports:
+    - target: 5432
+      published: 55022
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready", "-d", "recognizer"]
+      interval: 3s
+      timeout: 5s 
+      retries: 10
+      start_period: 5s
+
+  svcbrain:
+    container_name: "svcbrain"
+    image: "svcbrain:latest"
+    environment:
+      OTEL_DOTNET_EXPERIMENTAL_OTLP_EMIT_EXCEPTION_LOG_ATTRIBUTES: "true"
+      OTEL_DOTNET_EXPERIMENTAL_OTLP_EMIT_EVENT_LOG_ATTRIBUTES: "true"
+      OTEL_DOTNET_EXPERIMENTAL_OTLP_RETRY: "in_memory"
+      ASPNETCORE_FORWARDEDHEADERS_ENABLED: "true"
+      HTTP_PORTS: "8080"
+      InfrastructureOptions__PostgresConnectionString: "Host=pgBrain;Port=5432;Username=postgres;Password=VKJ2YUkZY!uGvp71evnGq9;Database=recognizer"
+      GRAFANA_URL: "grafana:3000"
+      OTEL_EXPORTER_OTLP_ENDPOINT: "http://aspire-dashboard:18889"
+      OTEL_SERVICE_NAME: "svcbrain"
+      #Kestrel__EndpointDefaults__Protocols: "Http1AndHttp2" # uncomment to make metrics available; the service will fail on http2 though
+    ports:
+    - target: 8080
+      published: 10000
+    - target: 8443
+      published: 10001
+    restart: unless-stopped
+    depends_on:
+      pgBrain:
+        condition: service_healthy
+
+  pgCovers:
+    container_name: "pgCovers"
+    image: "docker.io/library/postgres:17.0"
+    environment:
+      POSTGRES_HOST_AUTH_METHOD: "scram-sha-256"
+      POSTGRES_INITDB_ARGS: "--auth-host=scram-sha-256 --auth-local=scram-sha-256"
+      POSTGRES_USER: "postgres"
+      POSTGRES_PASSWORD: "PZKoqryUR50ZXr!HXPpj8j"
+      POSTGRES_DB: "covers"
+      # OTEL_EXPORTER_OTLP_ENDPOINT: "http://aspire-dashboard:18889"
+      # OTEL_SERVICE_NAME: "pgCovers"
+    ports:
+    - target: 5432
+      published: 55023
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready", "-d", "covers"]
+      interval: 3s
+      timeout: 5s 
+      retries: 10
+      start_period: 5s
+
+  svccovers:
+    container_name: "svccovers"
+    image: "svccovers:latest"
+    environment:
+      OTEL_DOTNET_EXPERIMENTAL_OTLP_EMIT_EXCEPTION_LOG_ATTRIBUTES: "true"
+      OTEL_DOTNET_EXPERIMENTAL_OTLP_EMIT_EVENT_LOG_ATTRIBUTES: "true"
+      OTEL_DOTNET_EXPERIMENTAL_OTLP_RETRY: "in_memory"
+      ASPNETCORE_FORWARDEDHEADERS_ENABLED: "true"
+      HTTP_PORTS: "8080"
+      InfrastructureOptions__PostgresConnectionString: "Host=pgCovers;Port=5432;Username=postgres;Password=PZKoqryUR50ZXr!HXPpj8j;Database=covers"
+      GRAFANA_URL: "grafana:3000"
+      OTEL_EXPORTER_OTLP_ENDPOINT: "http://aspire-dashboard:18889"
+      OTEL_SERVICE_NAME: "svccovers"
+      #Kestrel__EndpointDefaults__Protocols: "Http1AndHttp2" # uncomment to make metrics available; the service will fail on http2 though
+    ports:
+    - target: 8080
+      published: 10002
+    - target: 8443
+      published: 10003
+    restart: unless-stopped
+    depends_on:
+      pgCovers:
+        condition: service_healthy
+
+  pgMetadata:
+    container_name: "pgMetadata"
+    image: "docker.io/library/postgres:17.0"
+    environment:
+      POSTGRES_HOST_AUTH_METHOD: "scram-sha-256"
+      POSTGRES_INITDB_ARGS: "--auth-host=scram-sha-256 --auth-local=scram-sha-256"
+      POSTGRES_USER: "postgres"
+      POSTGRES_PASSWORD: "bkasktOf1py790kAVgwXEB"
+      POSTGRES_DB: "metadata"
+      # OTEL_EXPORTER_OTLP_ENDPOINT: "http://aspire-dashboard:18889"
+      # OTEL_SERVICE_NAME: "pgMetadata"
+    ports:
+    - target: 5432
+      published: 55021
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready", "-d", "metadata"]
+      interval: 3s
+      timeout: 5s 
+      retries: 10
+      start_period: 5s
+    
+  svcmetadata:
+    container_name: "svcmetadata"
+    image: "svcmetadata:latest"
+    environment:
+      OTEL_DOTNET_EXPERIMENTAL_OTLP_EMIT_EXCEPTION_LOG_ATTRIBUTES: "true"
+      OTEL_DOTNET_EXPERIMENTAL_OTLP_EMIT_EVENT_LOG_ATTRIBUTES: "true"
+      OTEL_DOTNET_EXPERIMENTAL_OTLP_RETRY: "in_memory"
+      ASPNETCORE_FORWARDEDHEADERS_ENABLED: "true"
+      HTTP_PORTS: "8080"
+      InfrastructureOptions__PostgresConnectionString: "Host=pgMetadata;Port=5432;Username=postgres;Password=bkasktOf1py790kAVgwXEB;Database=metadata"
+      GRAFANA_URL: "grafana:3000"
+      OTEL_EXPORTER_OTLP_ENDPOINT: "http://aspire-dashboard:18889"
+      OTEL_SERVICE_NAME: "svcmetadata"
+      #Kestrel__EndpointDefaults__Protocols: "Http1AndHttp2" # uncomment to make metrics available; the service will fail on http2 though
+    ports:
+    - target: 8080
+      published: 10004
+    - target: 8443
+      published: 10005
+    restart: unless-stopped
+    depends_on:
+      pgMetadata:
+        condition: service_healthy
+
+  gateway:
+    container_name: "gateway"
+    image: "gateway:latest"
+    environment:
+      OTEL_DOTNET_EXPERIMENTAL_OTLP_EMIT_EXCEPTION_LOG_ATTRIBUTES: "true"
+      OTEL_DOTNET_EXPERIMENTAL_OTLP_EMIT_EVENT_LOG_ATTRIBUTES: "true"
+      OTEL_DOTNET_EXPERIMENTAL_OTLP_RETRY: "in_memory"
+      ASPNETCORE_FORWARDEDHEADERS_ENABLED: "true"
+      HTTP_PORTS: "8080"
+      services__svcbrain__http__0: "http://svcbrain:8080"
+      services__svccovers__http__0: "http://svccovers:8080"
+      services__svcmetadata__http__0: "http://svcmetadata:8080"
+      GRAFANA_URL: "grafana:3000"
+      OTEL_EXPORTER_OTLP_ENDPOINT: "http://aspire-dashboard:18889"
+      OTEL_SERVICE_NAME: "gateway"
+      MicroserviceAddresses__BrainAddress: "http://svcbrain:8080"
+      MicroserviceAddresses__CoverAddress: "http://svccovers:8080"
+      MicroserviceAddresses__MetadataAddress: "http://svcmetadata:8080"
+    ports:
+    - target: 8080
+      published: 10006
+    - target: 8443
+      published: 10007
+    restart: unless-stopped

@@ -1,0 +1,273 @@
+{
+  "$schema": "https://json.schemastore.org/aspire-8.0.json",
+  "resources": {
+    "grafana": {
+      "type": "container.v0",
+      "image": "grafana/grafana:latest",
+      "bindMounts": [
+        {
+          "source": "../grafana/config",
+          "target": "/etc/grafana",
+          "readOnly": false
+        },
+        {
+          "source": "../grafana/dashboards",
+          "target": "/var/lib/grafana/dashboards",
+          "readOnly": false
+        }
+      ],
+      "bindings": {
+        "grafana-http": {
+          "scheme": "http",
+          "protocol": "tcp",
+          "transport": "http",
+          "targetPort": 3000
+        }
+      }
+    },
+    "prometheus": {
+      "type": "container.v0",
+      "image": "prom/prometheus:latest",
+      "bindMounts": [
+        {
+          "source": "../prometheus",
+          "target": "/etc/prometheus",
+          "readOnly": false
+        }
+      ],
+      "bindings": {
+        "tcp": {
+          "scheme": "tcp",
+          "protocol": "tcp",
+          "transport": "tcp",
+          "targetPort": 9090
+        }
+      }
+    },
+    "pgBrain": {
+      "type": "container.v0",
+      "connectionString": "Host={pgBrain.bindings.tcp.host};Port={pgBrain.bindings.tcp.port};Username=postgres;Password={pgBrain-password.value}",
+      "image": "docker.io/library/postgres:17.0",
+      "env": {
+        "POSTGRES_HOST_AUTH_METHOD": "scram-sha-256",
+        "POSTGRES_INITDB_ARGS": "--auth-host=scram-sha-256 --auth-local=scram-sha-256",
+        "POSTGRES_USER": "postgres",
+        "POSTGRES_PASSWORD": "{pgBrain-password.value}",
+        "POSTGRES_DB": "recognizer"
+      },
+      "bindings": {
+        "tcp": {
+          "scheme": "tcp",
+          "protocol": "tcp",
+          "transport": "tcp",
+          "port": 55022,
+          "targetPort": 5432
+        }
+      }
+    },
+    "recognizer": {
+      "type": "value.v0",
+      "connectionString": "{pgBrain.connectionString};Database=recognizer"
+    },
+    "svcbrain": {
+      "type": "project.v0",
+      "path": "../../RecognizerBrain/Brain/Brain.csproj",
+      "env": {
+        "OTEL_DOTNET_EXPERIMENTAL_OTLP_EMIT_EXCEPTION_LOG_ATTRIBUTES": "true",
+        "OTEL_DOTNET_EXPERIMENTAL_OTLP_EMIT_EVENT_LOG_ATTRIBUTES": "true",
+        "OTEL_DOTNET_EXPERIMENTAL_OTLP_RETRY": "in_memory",
+        "ASPNETCORE_FORWARDEDHEADERS_ENABLED": "true",
+        "HTTP_PORTS": "{svcbrain.bindings.http.targetPort}",
+        "InfrastructureOptions__PostgresConnectionString": "{pgBrain.connectionString};Database=recognizer",
+        "GRAFANA_URL": "{grafana.bindings.grafana-http.url}"
+      },
+      "bindings": {
+        "http": {
+          "scheme": "http",
+          "protocol": "tcp",
+          "transport": "http2"
+        },
+        "https": {
+          "scheme": "https",
+          "protocol": "tcp",
+          "transport": "http2"
+        }
+      }
+    },
+    "pgCovers": {
+      "type": "container.v0",
+      "connectionString": "Host={pgCovers.bindings.tcp.host};Port={pgCovers.bindings.tcp.port};Username=postgres;Password={pgCovers-password.value}",
+      "image": "docker.io/library/postgres:17.0",
+      "env": {
+        "POSTGRES_HOST_AUTH_METHOD": "scram-sha-256",
+        "POSTGRES_INITDB_ARGS": "--auth-host=scram-sha-256 --auth-local=scram-sha-256",
+        "POSTGRES_USER": "postgres",
+        "POSTGRES_PASSWORD": "{pgCovers-password.value}",
+        "POSTGRES_DB": "covers"
+      },
+      "bindings": {
+        "tcp": {
+          "scheme": "tcp",
+          "protocol": "tcp",
+          "transport": "tcp",
+          "port": 55023,
+          "targetPort": 5432
+        }
+      }
+    },
+    "covers": {
+      "type": "value.v0",
+      "connectionString": "{pgCovers.connectionString};Database=covers"
+    },
+    "svccovers": {
+      "type": "project.v0",
+      "path": "../../RecognizerCovers/Covers/Covers.csproj",
+      "env": {
+        "OTEL_DOTNET_EXPERIMENTAL_OTLP_EMIT_EXCEPTION_LOG_ATTRIBUTES": "true",
+        "OTEL_DOTNET_EXPERIMENTAL_OTLP_EMIT_EVENT_LOG_ATTRIBUTES": "true",
+        "OTEL_DOTNET_EXPERIMENTAL_OTLP_RETRY": "in_memory",
+        "ASPNETCORE_FORWARDEDHEADERS_ENABLED": "true",
+        "HTTP_PORTS": "{svccovers.bindings.http.targetPort}",
+        "InfrastructureOptions__PostgresConnectionString": "{pgCovers.connectionString};Database=covers",
+        "GRAFANA_URL": "{grafana.bindings.grafana-http.url}"
+      },
+      "bindings": {
+        "http": {
+          "scheme": "http",
+          "protocol": "tcp",
+          "transport": "http2"
+        },
+        "https": {
+          "scheme": "https",
+          "protocol": "tcp",
+          "transport": "http2"
+        }
+      }
+    },
+    "pgMetadata": {
+      "type": "container.v0",
+      "connectionString": "Host={pgMetadata.bindings.tcp.host};Port={pgMetadata.bindings.tcp.port};Username=postgres;Password={pgMetadata-password.value}",
+      "image": "docker.io/library/postgres:17.0",
+      "env": {
+        "POSTGRES_HOST_AUTH_METHOD": "scram-sha-256",
+        "POSTGRES_INITDB_ARGS": "--auth-host=scram-sha-256 --auth-local=scram-sha-256",
+        "POSTGRES_USER": "postgres",
+        "POSTGRES_PASSWORD": "{pgMetadata-password.value}",
+        "POSTGRES_DB": "metadata"
+      },
+      "bindings": {
+        "tcp": {
+          "scheme": "tcp",
+          "protocol": "tcp",
+          "transport": "tcp",
+          "port": 55021,
+          "targetPort": 5432
+        }
+      }
+    },
+    "metadata": {
+      "type": "value.v0",
+      "connectionString": "{pgMetadata.connectionString};Database=metadata"
+    },
+    "svcmetadata": {
+      "type": "project.v0",
+      "path": "../../RecognizerMetadata/Metadata/Metadata.csproj",
+      "env": {
+        "OTEL_DOTNET_EXPERIMENTAL_OTLP_EMIT_EXCEPTION_LOG_ATTRIBUTES": "true",
+        "OTEL_DOTNET_EXPERIMENTAL_OTLP_EMIT_EVENT_LOG_ATTRIBUTES": "true",
+        "OTEL_DOTNET_EXPERIMENTAL_OTLP_RETRY": "in_memory",
+        "ASPNETCORE_FORWARDEDHEADERS_ENABLED": "true",
+        "HTTP_PORTS": "{svcmetadata.bindings.http.targetPort}",
+        "InfrastructureOptions__PostgresConnectionString": "{pgMetadata.connectionString};Database=metadata",
+        "GRAFANA_URL": "{grafana.bindings.grafana-http.url}"
+      },
+      "bindings": {
+        "http": {
+          "scheme": "http",
+          "protocol": "tcp",
+          "transport": "http2"
+        },
+        "https": {
+          "scheme": "https",
+          "protocol": "tcp",
+          "transport": "http2"
+        }
+      }
+    },
+    "gateway": {
+      "type": "project.v0",
+      "path": "../../RecognizerGateway/Gateway/Gateway.csproj",
+      "env": {
+        "OTEL_DOTNET_EXPERIMENTAL_OTLP_EMIT_EXCEPTION_LOG_ATTRIBUTES": "true",
+        "OTEL_DOTNET_EXPERIMENTAL_OTLP_EMIT_EVENT_LOG_ATTRIBUTES": "true",
+        "OTEL_DOTNET_EXPERIMENTAL_OTLP_RETRY": "in_memory",
+        "ASPNETCORE_FORWARDEDHEADERS_ENABLED": "true",
+        "HTTP_PORTS": "{gateway.bindings.http.targetPort}",
+        "services__svcbrain__http__0": "{svcbrain.bindings.http.url}",
+        "services__svcbrain__https__0": "{svcbrain.bindings.https.url}",
+        "services__svccovers__http__0": "{svccovers.bindings.http.url}",
+        "services__svccovers__https__0": "{svccovers.bindings.https.url}",
+        "services__svcmetadata__http__0": "{svcmetadata.bindings.http.url}",
+        "services__svcmetadata__https__0": "{svcmetadata.bindings.https.url}",
+        "GRAFANA_URL": "{grafana.bindings.grafana-http.url}"
+      },
+      "bindings": {
+        "http": {
+          "scheme": "http",
+          "protocol": "tcp",
+          "transport": "http"
+        },
+        "https": {
+          "scheme": "https",
+          "protocol": "tcp",
+          "transport": "http"
+        }
+      }
+    },
+    "pgBrain-password": {
+      "type": "parameter.v0",
+      "value": "{pgBrain-password.inputs.value}",
+      "inputs": {
+        "value": {
+          "type": "string",
+          "secret": true,
+          "default": {
+            "generate": {
+              "minLength": 22
+            }
+          }
+        }
+      }
+    },
+    "pgCovers-password": {
+      "type": "parameter.v0",
+      "value": "{pgCovers-password.inputs.value}",
+      "inputs": {
+        "value": {
+          "type": "string",
+          "secret": true,
+          "default": {
+            "generate": {
+              "minLength": 22
+            }
+          }
+        }
+      }
+    },
+    "pgMetadata-password": {
+      "type": "parameter.v0",
+      "value": "{pgMetadata-password.inputs.value}",
+      "inputs": {
+        "value": {
+          "type": "string",
+          "secret": true,
+          "default": {
+            "generate": {
+              "minLength": 22
+            }
+          }
+        }
+      }
+    }
+  }
+}

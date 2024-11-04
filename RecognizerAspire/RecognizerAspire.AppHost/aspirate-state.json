@@ -1,0 +1,45 @@
+{
+  "projectPath": ".",
+  "outputPath": "aspirate-output",
+  "containerImageTags": [
+    "latest"
+  ],
+  "containerBuilder": "docker",
+  "outputFormat": "compose",
+  "privateRegistryEmail": "aspir8@aka.ms",
+  "includeDashboard": true,
+  "secrets": {
+    "salt": "8Hsny9VwbAxhEhEL",
+    "hash": "VuIQH5CEGetaTYqUh/gOf0V4hNw5JbWB64W5zZMBlLg=",
+    "secrets": {
+      "pgBrain-password": {
+        "value": "8Hsny9VwbAxhEhELSJHz6NlJ3zkhJiaSFKR9katyQrlZ8C9Xu37gomKF3cIEqj7yEr8="
+      },
+      "pgCovers-password": {
+        "value": "8Hsny9VwbAxhEhELGbKzWvdaQBH50KMqdkOY4q1jQ\u002BRx1z1YsGqlv0yHy7s5jCDfW\u002Bw="
+      },
+      "pgMetadata-password": {
+        "value": "8Hsny9VwbAxhEhELsWWKXzYYxRPE/dF6Q2j\u002BlZ9Safhr0Qtr0y/s0i3FgbI3uyftJsQ="
+      },
+      "grafana": {},
+      "prometheus": {},
+      "pgBrain": {
+        "POSTGRES_PASSWORD": "8Hsny9VwbAxhEhELSJHz6NlJ3zkhJiaSFKR9katyQrlZ8C9Xu37gomKF3cIEqj7yEr8="
+      },
+      "recognizer": {},
+      "svcbrain": {},
+      "pgCovers": {
+        "POSTGRES_PASSWORD": "8Hsny9VwbAxhEhELGbKzWvdaQBH50KMqdkOY4q1jQ\u002BRx1z1YsGqlv0yHy7s5jCDfW\u002Bw="
+      },
+      "covers": {},
+      "svccovers": {},
+      "pgMetadata": {
+        "POSTGRES_PASSWORD": "8Hsny9VwbAxhEhELsWWKXzYYxRPE/dF6Q2j\u002BlZ9Safhr0Qtr0y/s0i3FgbI3uyftJsQ="
+      },
+      "metadata": {},
+      "svcmetadata": {},
+      "gateway": {}
+    }
+  },
+  "processAllComponents": true
+}
