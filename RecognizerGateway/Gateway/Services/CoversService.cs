@@ -18,7 +18,7 @@ namespace RecognizerGateway.Services
 
         public CoversService(IOptions<MicroserviceAddresses> addresses)
         {
-            _coversBaseAddress = addresses.Value.BrainAddress;
+            _coversBaseAddress = addresses.Value.CoversAddress;
         }
 
         public async Task<Result<ReadCoverMetaResponse>> FindCoverAsync(long coverId, GrpcCovers.CoverType coverType){

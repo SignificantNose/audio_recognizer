@@ -1,0 +1,30 @@
+2024/11/05 10:59:44 [warn] 1#1: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/nginx.conf:21
+2024/11/05 11:00:56 [emerg] 1#1: invalid parameter "http2" in /etc/nginx/nginx.conf:17
+2024/11/05 11:00:59 [emerg] 1#1: invalid parameter "http2" in /etc/nginx/nginx.conf:17
+2024/11/05 11:01:00 [emerg] 1#1: invalid parameter "http2" in /etc/nginx/nginx.conf:17
+2024/11/05 11:01:01 [emerg] 1#1: invalid parameter "http2" in /etc/nginx/nginx.conf:17
+2024/11/05 11:01:02 [emerg] 1#1: invalid parameter "http2" in /etc/nginx/nginx.conf:17
+2024/11/05 11:01:04 [emerg] 1#1: invalid parameter "http2" in /etc/nginx/nginx.conf:17
+2024/11/05 11:02:18 [warn] 1#1: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/nginx.conf:21
+2024/11/05 11:02:18 [emerg] 1#1: invalid host in upstream "http://brain_api" in /etc/nginx/nginx.conf:25
+2024/11/05 11:02:18 [warn] 1#1: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/nginx.conf:21
+2024/11/05 11:02:18 [emerg] 1#1: invalid host in upstream "http://brain_api" in /etc/nginx/nginx.conf:25
+2024/11/05 11:02:20 [warn] 1#1: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/nginx.conf:21
+2024/11/05 11:02:20 [emerg] 1#1: invalid host in upstream "http://brain_api" in /etc/nginx/nginx.conf:25
+2024/11/05 11:02:21 [warn] 1#1: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/nginx.conf:21
+2024/11/05 11:02:21 [emerg] 1#1: invalid host in upstream "http://brain_api" in /etc/nginx/nginx.conf:25
+2024/11/05 11:02:22 [warn] 1#1: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/nginx.conf:21
+2024/11/05 11:02:22 [emerg] 1#1: invalid host in upstream "http://brain_api" in /etc/nginx/nginx.conf:25
+2024/11/05 11:02:24 [warn] 1#1: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/nginx.conf:21
+2024/11/05 11:02:24 [emerg] 1#1: invalid host in upstream "http://brain_api" in /etc/nginx/nginx.conf:25
+2024/11/05 11:02:27 [warn] 1#1: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/nginx.conf:21
+2024/11/05 11:02:27 [emerg] 1#1: invalid host in upstream "http://brain_api" in /etc/nginx/nginx.conf:25
+2024/11/05 11:02:34 [warn] 1#1: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/nginx.conf:21
+2024/11/05 11:02:34 [emerg] 1#1: invalid host in upstream "http://brain_api" in /etc/nginx/nginx.conf:25
+2024/11/05 11:02:47 [warn] 1#1: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/nginx.conf:21
+2024/11/05 11:02:47 [emerg] 1#1: invalid host in upstream "http://brain_api" in /etc/nginx/nginx.conf:25
+2024/11/05 11:03:35 [warn] 1#1: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/nginx.conf:21
+2024/11/05 11:06:20 [warn] 1#1: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/nginx.conf:21
+2024/11/05 11:08:58 [warn] 1#1: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/nginx.conf:21
+2024/11/05 11:11:28 [warn] 1#1: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/nginx.conf:22
+2024/11/05 13:06:34 [warn] 1#1: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/nginx.conf:22

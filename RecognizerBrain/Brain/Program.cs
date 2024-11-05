@@ -2,6 +2,7 @@ using Application.Extensions;
 using Brain.Interceptors;
 using Brain.Services;
 using Infrastructure.Extensions;
+using Microsoft.AspNetCore.HttpOverrides;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.AddServiceDefaults();
@@ -19,7 +20,15 @@ builder.Services
     .AddInfrastructure(builder.Configuration)
     .AddRepositories();
 
+builder.Services.Configure<ForwardedHeadersOptions>(options =>
+{
+    options.ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto;
+});
+
 var app = builder.Build();
+
+app.UseForwardedHeaders();
+
 app.MapDefaultEndpoints();
 
 // Configure the HTTP request pipeline.
