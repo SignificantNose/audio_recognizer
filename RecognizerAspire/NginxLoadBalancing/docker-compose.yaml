@@ -97,6 +97,10 @@ services:
     depends_on:
       pgBrain:
         condition: service_healthy
+    deploy:
+      mode: replicated
+      replicas: 3
+      endpoint_mode: dnserr
 
   pgCovers:
     image: docker.io/library/postgres:17.0
