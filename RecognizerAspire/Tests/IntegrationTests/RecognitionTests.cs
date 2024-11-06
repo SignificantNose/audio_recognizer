@@ -28,7 +28,7 @@ public class RecognitionTests
         );
 
         var response = await httpClient.PostAsync(
-            "/RecognizerEndpoint", 
+            "/RecognizerEndpoint/recognizeTrack", 
             requestParams
             );
 
@@ -53,7 +53,7 @@ public class RecognitionTests
         );
 
         var response = await httpClient.PostAsync(
-            "/RecognizerEndpoint", 
+            "/RecognizerEndpoint/recognizeTrack", 
             requestParams
             );
 
