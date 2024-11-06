@@ -1,80 +1,137 @@
-version: "3"
 services:
-  recognizer:
-    image: significantnose/recognizer-brain
-    restart: always
-    container_name: recognizer-service
+  pgBrain:
+    image: docker.io/library/postgres:17.0
     environment:
-      # apparently, non-prefixed env variable is the way to 
-      # override the appsettings.json configuration parameters.
-      # ideally the application must take the connection string
-      # from the env variable. todo.
-      - ASPNETCORE_URLS=http://*:80 
-      - InfrastructureOptions__PostgresConnectionString=User ID=postgres;Host=postgresql;Port=5432;Database=recognizer;Pooling=true;
+      POSTGRES_HOST_AUTH_METHOD: scram-sha-256
+      POSTGRES_INITDB_ARGS: "--auth-host=scram-sha-256 --auth-local=scram-sha-256"
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: VKJ2YUkZY!uGvp71evnGq9
+      POSTGRES_DB: recognizer
     ports:
-      - 50002:80
-
-    depends_on:
-      postgresql:
-        condition: service_healthy
-
-  metadata:
-    image: significantnose/recognizer-metadata
-    restart: always
-    container_name: metadata-service
-    environment:
-      # apparently, non-prefixed env variable is the way to 
-      # override the appsettings.json configuration parameters.
-      # ideally the application must take the connection string
-      # from the env variable. todo.
-      - ASPNETCORE_URLS=http://*:80 
-      - InfrastructureOptions__PostgresConnectionString=User ID=postgres;Host=postgresql;Port=5432;Database=metadata;Pooling=true;
-    ports:
-      - 50001:80
-
-    depends_on:
-      postgresql:
-        condition: service_healthy
-
-  covers:
-    image: significantnose/recognizer-covers
-    restart: always
-    container_name: covers-service
-    environment:
-      # apparently, non-prefixed env variable is the way to
-      # override the appsettings.json configuration parameters.
-      # ideally the application must take the connection string
-      # from the env variable. todo.
-      - ASPNETCORE_URLS=http://*:80
-      - InfrastructureOptions__PostgresConnectionString=User ID=postgres;Host=postgresql;Port=5432;Database=covers;Pooling=true;
-    ports:
-      - 50003:80
-
-    depends_on:
-      postgresql:
-        condition: service_healthy
-
-  postgresql:
-    image: postgres
-    restart: always
-    container_name: recognizer-postgres
-    # volumes:
-      # - ../docker-postgresql-multiple-databases:/docker-entrypoint-initdb.d/
-    environment:
-      # - "POSTGRES_MULTIPLE_DATABASES=recognizer,metadata,covers"
-      - "POSTGRES_USER=postgres"
-      - "POSTGRES_HOST_AUTH_METHOD=trust"
+      - 55022:5432
+    # - target: 5432
+      # published: 55022
+    restart: unless-stopped
     healthcheck:
       test: ["CMD-SHELL", "pg_isready", "-d", "recognizer"]
       interval: 3s
       timeout: 5s 
-      retries: 5
+      retries: 10
       start_period: 5s
+
+  svcbrain:
+    image: significantnose/svcbrain:latest
+    build: ./RecognizerBrain
+    environment:
+      ASPNETCORE_FORWARDEDHEADERS_ENABLED: true
+      HTTP_PORTS: 8080
+      InfrastructureOptions__PostgresConnectionString: "Host=pgBrain;Port=5432;Username=postgres;Password=VKJ2YUkZY!uGvp71evnGq9;Database=recognizer"
+    # ports:
+    # - target: 8080
+    #   published: 10000
+    # - target: 8443
+    #   published: 10001
+    restart: unless-stopped
+    depends_on:
+      pgBrain:
+        condition: service_healthy
+
+  pgCovers:
+    image: docker.io/library/postgres:17.0
+    environment:
+      POSTGRES_HOST_AUTH_METHOD: scram-sha-256
+      POSTGRES_INITDB_ARGS: "--auth-host=scram-sha-256 --auth-local=scram-sha-256"
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: PZKoqryUR50ZXr!HXPpj8j
+      POSTGRES_DB: covers
     ports:
-      - 15432:5432
-  # redis:
-  #   image: redis
-  #   restart: always
-  #   container_name: local-redis
-  #   ports:
-  #     - 16379:6379
+      - 55023:5432
+    # - target: 5432
+      # published: 55023
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready", "-d", "covers"]
+      interval: 3s
+      timeout: 5s 
+      retries: 10
+      start_period: 5s
+
+  svccovers:
+    image: significantnose/svccovers:latest
+    build: ./RecognizerCovers/
+    environment:
+      ASPNETCORE_FORWARDEDHEADERS_ENABLED: true
+      HTTP_PORTS: 8080
+      InfrastructureOptions__PostgresConnectionString: "Host=pgCovers;Port=5432;Username=postgres;Password=PZKoqryUR50ZXr!HXPpj8j;Database=covers"
+    ports:
+      - 10002:8080
+      - 10003:8443
+    # - target: 8080
+      # published: 10002
+    # - target: 8443
+      # published: 10003
+    restart: unless-stopped
+    depends_on:
+      pgCovers:
+        condition: service_healthy
+
+  pgMetadata:
+    image: docker.io/library/postgres:17.0
+    environment:
+      POSTGRES_HOST_AUTH_METHOD: scram-sha-256
+      POSTGRES_INITDB_ARGS: "--auth-host=scram-sha-256 --auth-local=scram-sha-256"
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: bkasktOf1py790kAVgwXEB
+      POSTGRES_DB: metadata
+    ports:
+      - 55021:5432
+    # - target: 5432
+      # published: 55021
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready", "-d", "metadata"]
+      interval: 3s
+      timeout: 5s 
+      retries: 10
+      start_period: 5s
+    
+  svcmetadata:
+    image: significantnose/svcmetadata:latest
+    build: ./RecognizerMetadata/
+    environment:
+      ASPNETCORE_FORWARDEDHEADERS_ENABLED: true
+      HTTP_PORTS: 8080
+      InfrastructureOptions__PostgresConnectionString: "Host=pgMetadata;Port=5432;Username=postgres;Password=bkasktOf1py790kAVgwXEB;Database=metadata"
+      #Kestrel__EndpointDefaults__Protocols: "Http1AndHttp2" # uncomment to make metrics available; the service will fail on http2 though
+    ports:
+      - 10004:8080
+      - 10005:8443
+    # - target: 8080
+      # published: 10004
+    # - target: 8443
+      # published: 10005
+    restart: unless-stopped
+    depends_on:
+      pgMetadata:
+        condition: service_healthy
+
+  svcgateway:
+    image: significantnose/svcgateway:latest
+    build: ./RecognizerGateway/   # will not work now, need to build explicitly
+    environment:
+      ASPNETCORE_FORWARDEDHEADERS_ENABLED: true
+      HTTP_PORTS: 8080
+      services__svcbrain__http__0: http://svcbrain:8080
+      services__svccovers__http__0: http://svccovers:8080
+      services__svcmetadata__http__0: http://svcmetadata:8080
+      MicroserviceAddresses__BrainAddress: http://svcbrain:8080
+      MicroserviceAddresses__CoverAddress: http://svccovers:8080
+      MicroserviceAddresses__MetadataAddress: http://svcmetadata:8080
+    ports:
+      - 10006:8080
+      - 10007:8443
+    # - target: 8080
+      # published: 10006
+    # - target: 8443
+      # published: 10007
+    restart: unless-stopped
