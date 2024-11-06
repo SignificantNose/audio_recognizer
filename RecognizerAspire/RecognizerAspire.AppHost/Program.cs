@@ -26,7 +26,7 @@ var brainDb = builder.AddPostgres("pgBrain", port: 55022)
 var brain = builder.AddProject<Projects.Brain>("svcbrain")
                 .WithEnvironment("InfrastructureOptions__PostgresConnectionString", brainDb.Resource.ConnectionStringExpression)
                 .WithEnvironment("GRAFANA_URL", grafana.GetEndpoint("grafana-http"))
-                .WithReplicas(4)
+                // .WithReplicas(4)
                 .WaitFor(brainDb)
                 ;
 
@@ -54,7 +54,7 @@ var metadata = builder.AddProject<Projects.Metadata>("svcmetadata")
                     .WithEnvironment("GRAFANA_URL", grafana.GetEndpoint("grafana-http"))
                     .WaitFor(metadataDb);
 
-var gateway = builder.AddProject<Projects.Gateway>("gateway")
+var gateway = builder.AddProject<Projects.Gateway>("svcgateway")
     .WithReference(brain)
     // .WaitFor(brain)
     // .WithEnvironment("MicroserviceAddresses__BrainAddress", "https://svcbrain")
