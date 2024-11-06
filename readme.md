@@ -313,6 +313,7 @@ There are plenty things to implement in the project. The following is just a sma
 - Make multiple return types in the recognition microservice
 - Add the ability for user to choose the fetched track metadata
 - Remake the cover art database schema. The PK must be TrackID+Cover_Type, with a string value denoting the path to the image
+- Modify the structure of Brain, Covers, Metadata microservices to be composed of several components: Migrations project (so that in case multiple instances are run, they do not conflict with each other on the point of migrations and just wait until the migrations project finishes working) and another HTTP endpoint for metrics collection, possibly protected and requiring an API key.
 
 # Conclusion
 Considering this repository, it can be said that, as a result, an application has been created that is flexible due to the features ASP.NET Core provides. The microservices can also be modified easily due to the usage of Clean Architecture, and the communication interface that these APIs present can be considered all-purpose, as they are easy to follow.
