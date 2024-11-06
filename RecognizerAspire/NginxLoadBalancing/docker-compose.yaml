@@ -53,7 +53,6 @@ services:
     restart: always
 
   pgBrain:
-    container_name: pgBrain
     image: docker.io/library/postgres:17.0
     environment:
       POSTGRES_HOST_AUTH_METHOD: scram-sha-256
@@ -76,7 +75,8 @@ services:
       start_period: 5s
 
   svcbrain:
-    image: svcbrain:latest
+    image: significantnose/svcbrain:latest
+    build: ../../RecognizerBrain/Dockerfile
     environment:
       OTEL_DOTNET_EXPERIMENTAL_OTLP_EMIT_EXCEPTION_LOG_ATTRIBUTES: true
       OTEL_DOTNET_EXPERIMENTAL_OTLP_EMIT_EVENT_LOG_ATTRIBUTES: true
@@ -121,7 +121,8 @@ services:
       start_period: 5s
 
   svccovers:
-    image: svccovers:latest
+    image: significantnose/svccovers:latest
+    build: ../../RecognizerCovers/Dockerfile
     environment:
       OTEL_DOTNET_EXPERIMENTAL_OTLP_EMIT_EXCEPTION_LOG_ATTRIBUTES: true
       OTEL_DOTNET_EXPERIMENTAL_OTLP_EMIT_EVENT_LOG_ATTRIBUTES: true
@@ -146,7 +147,6 @@ services:
         condition: service_healthy
 
   pgMetadata:
-    container_name: pgMetadata
     image: docker.io/library/postgres:17.0
     environment:
       POSTGRES_HOST_AUTH_METHOD: scram-sha-256
@@ -169,7 +169,8 @@ services:
       start_period: 5s
     
   svcmetadata:
-    image: svcmetadata:latest
+    image: significantnose/svcmetadata:latest
+    build: ../../RecognizerMetadata/Dockerfile
     environment:
       OTEL_DOTNET_EXPERIMENTAL_OTLP_EMIT_EXCEPTION_LOG_ATTRIBUTES: true
       OTEL_DOTNET_EXPERIMENTAL_OTLP_EMIT_EVENT_LOG_ATTRIBUTES: true
@@ -193,8 +194,9 @@ services:
       pgMetadata:
         condition: service_healthy
 
-  gateway:
-    image: gateway:latest
+  svcgateway:
+    image: significantnose/svcgateway:latest
+    build: ../../RecognizerGateway/Dockerfile     # will not work now, need to build explicitly
     environment:
       OTEL_DOTNET_EXPERIMENTAL_OTLP_EMIT_EXCEPTION_LOG_ATTRIBUTES: true
       OTEL_DOTNET_EXPERIMENTAL_OTLP_EMIT_EVENT_LOG_ATTRIBUTES: true

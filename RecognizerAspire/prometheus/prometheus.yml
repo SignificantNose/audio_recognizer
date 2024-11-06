@@ -14,4 +14,4 @@ scrape_configs:
       - targets: ['svcmetadata:8443'] # hard-coded port matches launchSettings.json
   - job_name: 'gateway'
     static_configs:
-      - targets: ['gateway:8080'] # hard-coded port matches launchSettings.json
+      - targets: ['svcgateway:8080'] # hard-coded port matches launchSettings.json
