@@ -5,7 +5,7 @@ WORKDIR /source
 COPY . .
 
 RUN --mount=type=cache,id=nuget,target=/root/.nuget/packages \
-    dotnet publish -a x64 --use-current-runtime --self-contained false -o /app ./Brain/Brain.csproj
+    dotnet publish -a x64 --use-current-runtime --self-contained false -o /app ./RecognizerBrain/Brain/Brain.csproj
 
 
 # state w/o build files

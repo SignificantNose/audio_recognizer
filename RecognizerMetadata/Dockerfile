@@ -5,7 +5,7 @@ WORKDIR /source
 COPY . .
 
 RUN --mount=type=cache,id=nuget,target=/root/.nuget/packages \
-    dotnet publish -a x64 --use-current-runtime --self-contained false -o /app ./Metadata/Metadata.csproj
+    dotnet publish -a x64 --use-current-runtime --self-contained false -o /app ./RecognizerMetadata/Metadata/Metadata.csproj
 
 
 # state w/o build files

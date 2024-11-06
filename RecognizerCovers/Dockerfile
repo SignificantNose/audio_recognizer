@@ -5,7 +5,7 @@ WORKDIR /source
 COPY . .
 
 RUN --mount=type=cache,id=nuget,target=/root/.nuget/packages \
-    dotnet publish -a x64 --use-current-runtime --self-contained false -o /app ./Covers/Covers.csproj
+    dotnet publish -a x64 --use-current-runtime --self-contained false -o /app ./RecognizerCovers/Covers/Covers.csproj
 
 
 # state w/o build files
