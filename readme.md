@@ -41,6 +41,7 @@ Same goes to the rewritten [open-source chromaprint library][original chromaprin
     - [About tests](#about-tests)
     - [Aspire project notes](#aspire-project-notes)
     - [Rich and anemic models](#rich-and-anemic-models)
+    - [About migrations](#about-migrations)
     - [Goals for the future](#goals-for-the-future)
 - [Conclusion](#conclusion)
 
@@ -305,6 +306,17 @@ Considering Aspire name resolution: for some reason GRPC does not support name r
 ## Rich and anemic models
 The projections with collections are not rich - they're anemic. This should be considered when continuing developing the project: it must be considered as soon as possible.
 
+## About migrations
+There was a thought to move the migrations into a separate project (so that in case multiple instances are run, they do not conflict with each other on the point of migrations and just wait until the migrations project finishes working). This would've led to a new image that must co-exist with each microservice, meaning more complexity added to the project. 
+
+A decision has been made to make it a part of functionality of the microservices. Now, the appilcation reads the configuration, and in case it finds a `MigrateUp` configuration value set to `true`, the migrations will run. That way, other instances of the microservice can wait for the one instance running the migration to start running, and then start. 
+
+The approach described above is implemented in the compose file, which lies under `./RecognizerAspire/NginxLoadBalancing/docker-compose.yaml`. All microservices have the `-migr` suffix added to them, describing that this instance will run migrations on startup.
+
+However, the implementation in the compose file is far from being ideal: in case of Brain microservice, there is a separate migrations microservice, which is a working instance, and the service configuration is pretty much the same for them both. Therefore, if some configuration value must be changed for Brain microservice, it must be changed in both entries. I haven't found a way to make this more elegant, so this problem exists for now. Also, the amount of instances in the `svcbrain` service is the amount of ADDITIONAL instances. For now, it cannot be 0, as the load balancer will not be able to resolve the hostname and will fail to start.
+
+The 'separate migrations project' approach is not ideal as well: another problem that would've occurred when moving migrations into a separate project is that the connection string must've been shared (in order to avoid duplicating the connection string in both projects). It is possible with some workarounds described in [this][Shared config asp net] and [this][Include linked files from outside project asp net] articles, however it still leaves us with the added complexity and a new image that must be included into each deployment environment.
+
 ## Goals for the future
 There are plenty things to implement in the project. The following is just a small part of the bigger picture:
 
@@ -313,7 +325,8 @@ There are plenty things to implement in the project. The following is just a sma
 - Make multiple return types in the recognition microservice
 - Add the ability for user to choose the fetched track metadata
 - Remake the cover art database schema. The PK must be TrackID+Cover_Type, with a string value denoting the path to the image
-- Modify the structure of Brain, Covers, Metadata microservices to be composed of several components: Migrations project (so that in case multiple instances are run, they do not conflict with each other on the point of migrations and just wait until the migrations project finishes working) and another HTTP endpoint for metrics collection, possibly protected and requiring an API key.
+- Modify the structure of Brain, Covers, Metadata microservices to be composed of several components: add another HTTP endpoint for metrics collection, possibly protected and requiring an API key.
+
 
 # Conclusion
 Considering this repository, it can be said that, as a result, an application has been created that is flexible due to the features ASP.NET Core provides. The microservices can also be modified easily due to the usage of Clean Architecture, and the communication interface that these APIs present can be considered all-purpose, as they are easy to follow.
@@ -334,3 +347,6 @@ Considering this repository, it can be said that, as a result, an application ha
 [MusicBrainz Picard]: <https://picard.musicbrainz.org/>
 
 [NPG usage of DataSource]: <https://www.npgsql.org/doc/basic-usage.html>
+
+[Shared config asp net]: <https://andrewlock.net/sharing-appsettings-json-configuration-files-between-projects-in-asp-net-core/>
+[Include linked files from outside project asp net]: <https://andrewlock.net/including-linked-files-from-outside-the-project-directory-in-asp-net-core/>
