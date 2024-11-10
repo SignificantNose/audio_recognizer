@@ -243,7 +243,7 @@ services:
       OTEL_EXPORTER_OTLP_ENDPOINT: http://aspire-dashboard:18889
       OTEL_SERVICE_NAME: gateway
       MicroserviceAddresses__BrainAddress: http://brain_nginx:8080
-      MicroserviceAddresses__CoverAddress: http://svccovers-migr:8080
+      MicroserviceAddresses__CoversAddress: http://svccovers-migr:8080
       MicroserviceAddresses__MetadataAddress: http://svcmetadata-migr:8080
     ports:
       - 10006:8080
