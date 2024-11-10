@@ -73,6 +73,31 @@ services:
       timeout: 5s 
       retries: 10
       start_period: 5s
+  
+  svcbrain-migr:
+    image: significantnose/svcbrain:latest
+    build: ../../RecognizerBrain/Dockerfile
+    environment:
+      OTEL_DOTNET_EXPERIMENTAL_OTLP_EMIT_EXCEPTION_LOG_ATTRIBUTES: true
+      OTEL_DOTNET_EXPERIMENTAL_OTLP_EMIT_EVENT_LOG_ATTRIBUTES: true
+      OTEL_DOTNET_EXPERIMENTAL_OTLP_RETRY: in_memory
+      ASPNETCORE_FORWARDEDHEADERS_ENABLED: true
+      HTTP_PORTS: 8080
+      InfrastructureOptions__PostgresConnectionString: "Host=pgBrain;Port=5432;Username=postgres;Password=VKJ2YUkZY!uGvp71evnGq9;Database=recognizer"
+      GRAFANA_URL: grafana:3000
+      OTEL_EXPORTER_OTLP_ENDPOINT: http://aspire-dashboard:18889
+      OTEL_SERVICE_NAME: svcbrain
+      MigrateUp: true
+      #Kestrel__EndpointDefaults__Protocols: "Http1AndHttp2" # uncomment to make metrics available; the service will fail on http2 though
+    # ports:
+    # - target: 8080
+    #   published: 10000
+    # - target: 8443
+    #   published: 10001
+    restart: unless-stopped
+    depends_on:
+      pgBrain:
+        condition: service_healthy
 
   svcbrain:
     image: significantnose/svcbrain:latest
@@ -95,6 +120,8 @@ services:
     #   published: 10001
     restart: unless-stopped
     depends_on:
+      svcbrain-migr:
+        condition: service_started
       pgBrain:
         condition: service_healthy
     deploy:
@@ -124,7 +151,7 @@ services:
       retries: 10
       start_period: 5s
 
-  svccovers:
+  svccovers-migr:
     image: significantnose/svccovers:latest
     build: ../../RecognizerCovers/Dockerfile
     environment:
@@ -136,7 +163,8 @@ services:
       InfrastructureOptions__PostgresConnectionString: "Host=pgCovers;Port=5432;Username=postgres;Password=PZKoqryUR50ZXr!HXPpj8j;Database=covers"
       GRAFANA_URL: grafana:3000
       OTEL_EXPORTER_OTLP_ENDPOINT: http://aspire-dashboard:18889
-      OTEL_SERVICE_NAME: svccovers
+      OTEL_SERVICE_NAME: svccovers-migr
+      MigrateUp: true
       #Kestrel__EndpointDefaults__Protocols: "Http1AndHttp2" # uncomment to make metrics available; the service will fail on http2 though
     ports:
       - 10002:8080
@@ -172,7 +200,7 @@ services:
       retries: 10
       start_period: 5s
     
-  svcmetadata:
+  svcmetadata-migr:
     image: significantnose/svcmetadata:latest
     build: ../../RecognizerMetadata/Dockerfile
     environment:
@@ -184,7 +212,8 @@ services:
       InfrastructureOptions__PostgresConnectionString: "Host=pgMetadata;Port=5432;Username=postgres;Password=bkasktOf1py790kAVgwXEB;Database=metadata"
       GRAFANA_URL: grafana:3000
       OTEL_EXPORTER_OTLP_ENDPOINT: http://aspire-dashboard:18889
-      OTEL_SERVICE_NAME: svcmetadata
+      OTEL_SERVICE_NAME: svcmetadata-migr
+      MigrateUp: true
       #Kestrel__EndpointDefaults__Protocols: "Http1AndHttp2" # uncomment to make metrics available; the service will fail on http2 though
     ports:
       - 10004:8080
@@ -208,14 +237,14 @@ services:
       ASPNETCORE_FORWARDEDHEADERS_ENABLED: true
       HTTP_PORTS: 8080
       services__svcbrain__http__0: http://brain_nginx:8080
-      services__svccovers__http__0: http://svccovers:8080
-      services__svcmetadata__http__0: http://svcmetadata:8080
+      services__svccovers__http__0: http://svccovers-migr:8080
+      services__svcmetadata__http__0: http://svcmetadata-migr:8080
       GRAFANA_URL: grafana:3000
       OTEL_EXPORTER_OTLP_ENDPOINT: http://aspire-dashboard:18889
       OTEL_SERVICE_NAME: gateway
       MicroserviceAddresses__BrainAddress: http://brain_nginx:8080
-      MicroserviceAddresses__CoverAddress: http://svccovers:8080
-      MicroserviceAddresses__MetadataAddress: http://svcmetadata:8080
+      MicroserviceAddresses__CoverAddress: http://svccovers-migr:8080
+      MicroserviceAddresses__MetadataAddress: http://svcmetadata-migr:8080
     ports:
       - 10006:8080
       - 10007:8443

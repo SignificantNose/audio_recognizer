@@ -10,6 +10,7 @@ services:
       # ideally the application must take the connection string
       # from the env variable. todo.
       - ASPNETCORE_URLS=http://*:80 
+      - MigrateUp=true
       - InfrastructureOptions__PostgresConnectionString=User ID=postgres;Host=recognizer-postgresql;Port=5432;Database=recognizer;Pooling=true;
     ports:
       - 50002:80

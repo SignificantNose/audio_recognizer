@@ -11,6 +11,7 @@ services:
       # from the env variable. todo.
       - ASPNETCORE_URLS=http://*:80
       - InfrastructureOptions__PostgresConnectionString=User ID=postgres;Host=covers-postgresql;Port=5432;Database=covers;Pooling=true;
+      - MigrateUp=true
     ports:
       - 50003:80
 

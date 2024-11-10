@@ -26,6 +26,7 @@ var brainDb = builder.AddPostgres("pgBrain", port: 55022)
 var brain = builder.AddProject<Projects.Brain>("svcbrain")
                 .WithEnvironment("InfrastructureOptions__PostgresConnectionString", brainDb.Resource.ConnectionStringExpression)
                 .WithEnvironment("GRAFANA_URL", grafana.GetEndpoint("grafana-http"))
+                .WithEnvironment("MigrateUp", "true")
                 // .WithReplicas(4)
                 .WaitFor(brainDb)
                 ;
@@ -41,6 +42,7 @@ var coversDb = builder.AddPostgres("pgCovers", port: 55023)
 var covers = builder.AddProject<Projects.Covers>("svccovers")
                     .WithEnvironment("InfrastructureOptions__PostgresConnectionString", coversDb.Resource.ConnectionStringExpression)
                     .WithEnvironment("GRAFANA_URL", grafana.GetEndpoint("grafana-http"))
+                    .WithEnvironment("MigrateUp", "true")
                     .WaitFor(coversDb);
 
 string metadataDbName = "metadata";
@@ -52,6 +54,7 @@ var metadataDb = builder.AddPostgres("pgMetadata", port: 55021)
 var metadata = builder.AddProject<Projects.Metadata>("svcmetadata")
                     .WithEnvironment("InfrastructureOptions__PostgresConnectionString", metadataDb.Resource.ConnectionStringExpression)
                     .WithEnvironment("GRAFANA_URL", grafana.GetEndpoint("grafana-http"))
+                    .WithEnvironment("MigrateUp", "true")
                     .WaitFor(metadataDb);
 
 var gateway = builder.AddProject<Projects.Gateway>("svcgateway")
