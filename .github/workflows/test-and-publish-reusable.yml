@@ -22,6 +22,8 @@ jobs:
           POSTGRES_USER: postgres
           POSTGRES_DB: ${{ inputs.service-name }}
           POSTGRES_HOST_AUTH_METHOD: trust
+        ports:
+          - 5432:5432
         options: >-
           --health-cmd "pg_isready -d ${{ inputs.service-name }}"
           --health-interval 3s
@@ -34,7 +36,7 @@ jobs:
     env:
       PROJECT_PATH: ${{inputs.service-dir-path}}/${{inputs.service-name}}/
       TESTS_PATH: ${{inputs.service-dir-path}}/Tests/
-      InfrastructureOptions__PostgresConnectionString: "User ID=postgres;Host=postgrass;Port=5432;Database=${{ inputs.service-name }};Pooling=true;"
+      InfrastructureOptions__PostgresConnectionString: "User ID=postgres;Host=localhost;Port=5432;Database=${{ inputs.service-name }};Pooling=true;"
 
     steps:
     - uses: actions/checkout@v4
