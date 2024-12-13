@@ -1,0 +1,38 @@
+name: Recognizer CI
+
+on:
+  push:
+    branches: [ "ci" ]
+
+jobs:
+  build_and_test_brain:
+
+    runs-on: ubuntu-latest
+
+    env:
+      BRAIN_PROJ_PATH: ./RecognizerBrain/Brain/
+      BRAIN_TESTS_PATH: ./RecognizerBrain/Tests/
+
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: 8.0.x
+    
+    - name: Restore dependencies for Brain project
+      run: dotnet restore $BRAIN_PROJ_PATH 
+
+    - name: Restore dependencies for Tests project
+      run: dotnet restore $BRAIN_TESTS_PATH 
+    
+    - name: Build Brain project
+      run: dotnet build --no-restore $BRAIN_PROJ_PATH
+    
+    - name: Build Tests project 
+      run: dotnet build --no-restore $BRAIN_TESTS_PATH
+
+    - name: Test
+      run: dotnet test --no-build --verbosity normal $BRAIN_TESTS_PATH
+  # pubilsh:
