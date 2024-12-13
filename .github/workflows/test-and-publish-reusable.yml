@@ -56,8 +56,12 @@ jobs:
     - name: Build Tests project 
       run: dotnet build --no-restore $TESTS_PATH
 
-    - name: Test
-      run: dotnet test --no-build --verbosity normal $TESTS_PATH
+    - name: Unit Testing
+      run: dotnet test --no-build --verbosity normal $TESTS_PATH --filter UnitTests
+    
+    - name: Integration Testing
+      run: dotnet test --no-build --verbosity normal $TESTS_PATH --filter IntegrationTests
+    
 
 
   pubilsh_image:
