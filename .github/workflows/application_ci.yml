@@ -40,14 +40,7 @@ jobs:
   pubilsh_image:
 
     runs-on: ubuntu-latest
-
-    # setting the permissions for `GITHUB_TOKEN` in order to authenticate 
-    # actions (by making an authenticated GitHub API request)
-    permissions:
-      contents: read
-      packages: write
-      attestations: write
-      id-token: write
+    needs: build_and_test_brain
 
     steps:
       - uses: actions/checkout@v4
