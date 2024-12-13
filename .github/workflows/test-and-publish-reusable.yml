@@ -62,6 +62,8 @@ jobs:
       run: dotnet test --no-build --verbosity normal $TESTS_PATH --filter UnitTests
     
     - name: Integration Testing
+      env: 
+        MigrateUp: true
       run: dotnet test --no-build --verbosity normal $TESTS_PATH --filter IntegrationTests
     
 
