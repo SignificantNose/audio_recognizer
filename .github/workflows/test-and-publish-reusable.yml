@@ -15,11 +15,26 @@ on:
 jobs:  
   build_and_test:
 
+    services:
+      postgrass:
+        image: postgres
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_DB: ${{ inputs.service-name }}
+          POSTGRES_HOST_AUTH_METHOD: trust
+        options: >-
+          --health-cmd "pg_isready -d ${{ inputs.service-name }}"
+          --health-interval 3s
+          --health-start-period 5s
+          --health-timeout 5s
+          --health-retries 5
+
     runs-on: ubuntu-latest
 
     env:
       PROJECT_PATH: ${{inputs.service-dir-path}}/${{inputs.service-name}}/
       TESTS_PATH: ${{inputs.service-dir-path}}/Tests/
+      InfrastructureOptions__PostgresConnectionString: "User ID=postgres;Host=postgrass;Port=5432;Database=${{ inputs.service-name }};Pooling=true;"
 
     steps:
     - uses: actions/checkout@v4
