@@ -5,9 +5,27 @@ on:
     branches: [ "ci" ]
 
 jobs:
-  brain_test_and_publish:
+  brain:
     uses: significantnose/audio_recognizer/.github/workflows/test-and-publish-reusable.yml@ci
     with:
       service-dir-path: ./RecognizerBrain/ 
       service-name: Brain
+    secrets: inherit
+  covers:
+    uses: significantnose/audio_recognizer/.github/workflows/test-and-publish-reusable.yml@ci
+    with:
+      service-dir-path: ./RecognizerCovers/ 
+      service-name: Covers
+    secrets: inherit
+  metadata:
+    uses: significantnose/audio_recognizer/.github/workflows/test-and-publish-reusable.yml@ci
+    with:
+      service-dir-path: ./RecognizerMetadata/ 
+      service-name: Metadata
+    secrets: inherit
+  gateway:
+    uses: significantnose/audio_recognizer/.github/workflows/test-and-publish-reusable.yml@ci
+    with:
+      service-dir-path: ./RecognizerGateway/ 
+      service-name: Gateway
     secrets: inherit
